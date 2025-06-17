@@ -15,10 +15,16 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { isClerkAPIResponseError, useSignIn, useSSO } from '@clerk/clerk-expo';
+import {
+    isClerkAPIResponseError,
+    useAuth,
+    useSignIn,
+    useSSO,
+} from '@clerk/clerk-expo';
 import { ClerkAPIError } from '@clerk/types';
 
 const LoginPage = () => {
+    const { signOut, getToken } = useAuth();
     const { signIn, setActive, isLoaded } = useSignIn();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -181,7 +187,7 @@ const LoginPage = () => {
                     {errorMessage && (
                         <Text style={{ color: 'red' }}>{errorMessage}</Text>
                     )}
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => signOut()}>
                         <Text
                             style={{
                                 fontSize: 16,
@@ -206,6 +212,7 @@ const LoginPage = () => {
                             height: 50,
                             marginBottom: 8,
                         }}
+                        onPress={() => onSelectAuth(Strategy.Google)}
                     >
                         <Ionicons
                             name='logo-google'

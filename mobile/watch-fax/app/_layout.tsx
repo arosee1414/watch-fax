@@ -24,7 +24,7 @@ export default function RootLayout(): React.JSX.Element {
         <GestureHandlerRootView>
             <ClerkProvider
                 publishableKey={
-                    'pk_test_dmFzdC1zZWFzbmFpbC00OC5jbGVyay5hY2NvdW50cy5kZXYk'
+                    'pk_test_d2lzZS1zdGluZ3JheS03Ny5jbGVyay5hY2NvdW50cy5kZXYk'
                 }
                 tokenCache={tokenCache}
             >
