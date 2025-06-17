@@ -43,6 +43,7 @@ function RootLayoutNav(): React.JSX.Element {
     useEffect(() => {
         if (isLoaded && isSignedIn) {
             //router.navigate('/dashboard');
+            console.log('User is signed in');
         } else if (isLoaded && !isSignedIn) {
             router.navigate('/login-page');
         }
