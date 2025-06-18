@@ -1,4 +1,8 @@
-import { defaultStyles, navyColor } from '@/assets/default-styles';
+import {
+    backgroundColor,
+    defaultStyles,
+    navyColor,
+} from '@/assets/default-styles';
 import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
@@ -110,7 +114,7 @@ const LoginPage = () => {
         <KeyboardAvoidingView
             keyboardVerticalOffset={-200}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={{ flex: 1, width: '100%' }}
+            style={{ flex: 1, width: '100%', backgroundColor: backgroundColor }}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View
@@ -138,7 +142,7 @@ const LoginPage = () => {
                     >
                         Login
                     </Text>
-                    <View style={{ marginBottom: 20 }}>
+                    <View style={{ marginBottom: 20, width: '80%' }}>
                         <Text style={styles.textLabel}>Email</Text>
                         <TextInput
                             autoCapitalize='none'
@@ -149,7 +153,7 @@ const LoginPage = () => {
                             style={styles.textInput}
                         />
                     </View>
-                    <View style={{ marginBottom: 20 }}>
+                    <View style={{ marginBottom: 20, width: '80%' }}>
                         <Text style={styles.textLabel}>Password</Text>
                         <TextInput
                             secureTextEntry={true}
@@ -167,7 +171,7 @@ const LoginPage = () => {
                             padding: 10,
                             borderRadius: 10,
                             alignItems: 'center',
-                            width: 320,
+                            width: '80%',
                             justifyContent: 'center',
                             height: 50,
                             marginBottom: 8,
@@ -187,7 +191,9 @@ const LoginPage = () => {
                     {errorMessage && (
                         <Text style={{ color: 'red' }}>{errorMessage}</Text>
                     )}
-                    <TouchableOpacity onPress={() => signOut()}>
+                    <TouchableOpacity
+                        onPress={() => router.push('/(auth)/sign-up-page')}
+                    >
                         <Text
                             style={{
                                 fontSize: 16,
@@ -207,7 +213,7 @@ const LoginPage = () => {
                             padding: 10,
                             borderRadius: 10,
                             alignItems: 'center',
-                            width: 320,
+                            width: '80%',
                             justifyContent: 'center',
                             height: 50,
                             marginBottom: 8,
@@ -246,7 +252,7 @@ const styles = StyleSheet.create({
     textInput: {
         color: 'black',
         height: 50,
-        width: 320,
+        maxWidth: 320,
         borderColor: '#D4D4D4',
         borderWidth: 1,
         borderRadius: 10,
