@@ -28,7 +28,6 @@ import {
 import { ClerkAPIError } from '@clerk/types';
 
 const LoginPage = () => {
-    const { signOut, getToken } = useAuth();
     const { signIn, setActive, isLoaded } = useSignIn();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
