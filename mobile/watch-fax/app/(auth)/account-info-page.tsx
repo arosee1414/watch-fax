@@ -70,7 +70,7 @@ const EnterNamePage = () => {
 
         if (!!firstName && !!lastName) {
             //all good, proceed to app
-            router.replace('/(tabs)/two');
+            router.replace('/(tabs)/dashboard');
         }
     };
 

@@ -74,7 +74,7 @@ const LoginPage = () => {
             // and redirect the user
             if (signInAttempt.status === 'complete') {
                 await setActive({ session: signInAttempt.createdSessionId });
-                router.navigate('/(tabs)/two');
+                router.navigate('/(tabs)/dashboard');
             } else {
                 // If the status is not complete, check why. User may need to
                 // complete further steps.

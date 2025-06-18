@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const backgroundColor = '#f0f0f0';
 export const navyColor = '#060F3D';
+export const goldColor = '#DAB262';
 
 export const defaultStyles = StyleSheet.create({
     container: {
