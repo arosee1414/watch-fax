@@ -48,16 +48,16 @@ function RootLayoutNav(): React.JSX.Element {
 
     useEffect(() => {
         if (isLoaded && isSignedIn && user?.firstName && user?.lastName) {
-            router.navigate('/(tabs)/two');
+            router.replace('/(tabs)/two');
         } else if (isLoaded && !isSignedIn && user) {
-            router.navigate('/(auth)/login-page');
+            router.replace('/(auth)/login-page');
         } else if (
             isLoaded &&
             isSignedIn &&
             user &&
             (!user?.firstName || !user?.lastName)
         ) {
-            router.navigate('/(auth)/account-info-page');
+            router.replace('/(auth)/account-info-page');
         }
     }, []);
 
