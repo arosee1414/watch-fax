@@ -22,7 +22,6 @@ import Dialog from 'react-native-dialog';
 import { router } from 'expo-router';
 
 const SignUpPage = () => {
-    const { signOut, getToken } = useAuth();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -87,9 +86,7 @@ const SignUpPage = () => {
             if (signUpAttempt.status === 'complete') {
                 setPendingVerification(false);
                 await setActive({ session: signUpAttempt.createdSessionId });
-                console.log('User is signed in');
-                signOut();
-                //router.navigate('/dashboard');
+                router.navigate('/(auth)/account-info-page');
             } else {
                 // If the status is not complete, check why. User may need to
                 // complete further steps.

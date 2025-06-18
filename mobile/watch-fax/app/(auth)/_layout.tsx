@@ -32,6 +32,21 @@ export default function AuthLayout(): React.JSX.Element {
                     ),
                 }}
             />
+            <Stack.Screen
+                name='account-info-page'
+                options={{
+                    headerShown: true,
+                    title: 'Account information',
+                    headerTitleStyle: {
+                        color: navyColor,
+                        fontSize: 25,
+                        fontFamily: 'roboto-black',
+                    },
+                    headerShadowVisible: false,
+                    headerStyle: { backgroundColor: backgroundColor },
+                    headerLeft: () => <></>,
+                }}
+            />
         </Stack>
     );
 }
