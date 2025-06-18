@@ -11,7 +11,7 @@ export default function AuthLayout(): React.JSX.Element {
                 name='sign-up-page'
                 options={{
                     headerShown: true,
-                    title: 'Account registration',
+                    title: 'Account creation',
                     headerTitleStyle: {
                         color: navyColor,
                         fontSize: 25,

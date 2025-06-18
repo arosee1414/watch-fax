@@ -58,6 +58,8 @@ function RootLayoutNav(): React.JSX.Element {
             (!user?.firstName || !user?.lastName)
         ) {
             router.replace('/(auth)/account-info-page');
+        } else {
+            router.replace('/(auth)/login-page');
         }
     }, []);
 

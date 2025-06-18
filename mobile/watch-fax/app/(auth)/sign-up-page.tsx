@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ClerkAPIError } from '@clerk/types';
 import Dialog from 'react-native-dialog';
 import { router } from 'expo-router';
+import CheckBox from '@/components/check-circle';
 
 const SignUpPage = () => {
     const [email, setEmail] = useState<string>('');
@@ -29,6 +30,7 @@ const SignUpPage = () => {
     const { isLoaded, signUp, setActive } = useSignUp();
     const [pendingVerification, setPendingVerification] = useState(false);
     const [code, setCode] = useState('');
+    const [agreeToTerms, setAgreeToTerms] = useState(false);
 
     const onSignUpPress = async () => {
         setErrorMessage(null);
@@ -40,6 +42,11 @@ const SignUpPage = () => {
             setErrorMessage('You must enter a password');
             return;
         }
+        if (agreeToTerms === false) {
+            setErrorMessage('You must agree to the terms and conditions');
+            return;
+        }
+
         if (!isLoaded) return;
 
         // Start sign-up process using email and password provided
@@ -111,7 +118,11 @@ const SignUpPage = () => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={defaultStyles.container}>
-                    <View style={{ alignItems: 'center' }}>
+                    <View
+                        style={{
+                            alignItems: 'center',
+                        }}
+                    >
                         <Dialog.Container visible={pendingVerification}>
                             <Dialog.Title>
                                 A verification code has been sent to your email.
@@ -162,6 +173,46 @@ const SignUpPage = () => {
                                 secureTextEntry
                             />
                         </View>
+                        <View
+                            style={[
+                                styles.inputGroup,
+                                {
+                                    flexDirection: 'row',
+                                    marginBottom: 20,
+
+                                    width: '90%',
+                                },
+                            ]}
+                        >
+                            <CheckBox
+                                isChecked={agreeToTerms}
+                                onPress={() => setAgreeToTerms((prev) => !prev)}
+                            />
+                            <Text
+                                style={{
+                                    marginTop: 3,
+                                    marginLeft: 10,
+                                }}
+                            >
+                                I agree to the{' '}
+                                <Text
+                                    style={{
+                                        textDecorationLine: 'underline',
+                                    }}
+                                >
+                                    Terms of Service
+                                </Text>{' '}
+                                and{' '}
+                                <Text
+                                    style={{
+                                        textDecorationLine: 'underline',
+                                    }}
+                                >
+                                    Privacy Policy
+                                </Text>
+                            </Text>
+                        </View>
+
                         {errorMessage && (
                             <Text style={{ color: 'red' }}>{errorMessage}</Text>
                         )}
@@ -169,7 +220,9 @@ const SignUpPage = () => {
                             style={styles.button}
                             onPress={onSignUpPress}
                         >
-                            <Text style={styles.buttonText}>Continue</Text>
+                            <Text style={styles.buttonText}>
+                                Create account
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>
