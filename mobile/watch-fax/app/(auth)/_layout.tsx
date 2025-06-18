@@ -35,6 +35,7 @@ export default function AuthLayout(): React.JSX.Element {
             <Stack.Screen
                 name='account-info-page'
                 options={{
+                    gestureEnabled: false,
                     headerShown: true,
                     title: 'Account information',
                     headerTitleStyle: {

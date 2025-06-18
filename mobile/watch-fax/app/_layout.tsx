@@ -1,7 +1,12 @@
 import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
-import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
+import {
+    ClerkProvider,
+    ClerkLoaded,
+    useAuth,
+    useUser,
+} from '@clerk/clerk-expo';
 import { tokenCache } from './utils/token-cache';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
@@ -38,13 +43,21 @@ export default function RootLayout(): React.JSX.Element {
 
 function RootLayoutNav(): React.JSX.Element {
     const { isLoaded, isSignedIn } = useAuth();
+    const { user } = useUser();
     const router = useRouter();
 
     useEffect(() => {
-        if (isLoaded && isSignedIn) {
+        if (isLoaded && isSignedIn && user?.firstName && user?.lastName) {
             router.navigate('/(tabs)/two');
-        } else if (isLoaded && !isSignedIn) {
+        } else if (isLoaded && !isSignedIn && user) {
             router.navigate('/(auth)/login-page');
+        } else if (
+            isLoaded &&
+            isSignedIn &&
+            user &&
+            (!user?.firstName || !user?.lastName)
+        ) {
+            router.navigate('/(auth)/account-info-page');
         }
     }, []);
 
