@@ -44,7 +44,7 @@ function RootLayoutNav(): React.JSX.Element {
         if (isLoaded && isSignedIn) {
             router.navigate('/(tabs)/two');
         } else if (isLoaded && !isSignedIn) {
-            router.navigate('/login-page');
+            router.navigate('/(auth)/login-page');
         }
     }, []);
 
