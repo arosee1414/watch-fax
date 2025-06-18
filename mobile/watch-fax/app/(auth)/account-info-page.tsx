@@ -78,7 +78,7 @@ const EnterNamePage = () => {
         if (!user) return;
         setFirstName(user.firstName ?? '');
         setLastName(user.lastName ?? '');
-    }, [user]);
+    }, []);
 
     return (
         <KeyboardAvoidingView
