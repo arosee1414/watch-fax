@@ -143,6 +143,7 @@ const LoginPage = () => {
                     <View style={{ marginBottom: 20, width: '80%' }}>
                         <Text style={styles.textLabel}>Email</Text>
                         <TextInput
+                            keyboardType='email-address'
                             autoCapitalize='none'
                             placeholder='Email'
                             placeholderTextColor='gray'

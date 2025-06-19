@@ -140,6 +140,7 @@ const SignUpPage = () => {
                         <View style={styles.inputGroup}>
                             <Text style={styles.textLabel}>Email</Text>
                             <TextInput
+                                keyboardType='email-address'
                                 placeholder='Email'
                                 placeholderTextColor='gray'
                                 onChangeText={setEmail}
