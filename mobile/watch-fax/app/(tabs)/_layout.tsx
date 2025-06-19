@@ -1,10 +1,13 @@
 import { backgroundColor, goldColor, navyColor } from '@/assets/default-styles';
+import { useUser } from '@clerk/clerk-expo';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React, { JSX } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 export default function Layout(): JSX.Element {
+    const { user } = useUser();
+
     return (
         <Tabs
             screenOptions={{
@@ -86,6 +89,15 @@ export default function Layout(): JSX.Element {
             <Tabs.Screen
                 name='collection'
                 options={{
+                    headerShown: true,
+                    title: `${user?.firstName || 'Collection'}'s Collection`,
+                    headerShadowVisible: false,
+                    headerStyle: { backgroundColor: backgroundColor },
+                    headerTitleStyle: {
+                        color: navyColor,
+                        fontSize: 25,
+                        fontFamily: 'roboto-black',
+                    },
                     tabBarLabel: 'Collection',
                     tabBarIcon: ({ focused, color, size }) => {
                         return (

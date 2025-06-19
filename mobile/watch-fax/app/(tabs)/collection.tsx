@@ -1,12 +1,34 @@
+import { backgroundColor, goldColor, navyColor } from '@/assets/default-styles';
+import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Collection = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Collection</Text>
-            <View style={styles.separator} />
-        </View>
+        <>
+            <SafeAreaView
+                style={{ backgroundColor: backgroundColor, flex: 1 }}
+            ></SafeAreaView>
+            <TouchableOpacity
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: 'grey',
+                    backgroundColor: navyColor,
+                    position: 'absolute',
+                    bottom: 30,
+                    right: 20,
+                    width: 60,
+                    height: 60,
+                    borderRadius: 60,
+                }}
+            >
+                <AntDesign name='plus' size={40} color={goldColor} />
+            </TouchableOpacity>
+        </>
     );
 };
 
