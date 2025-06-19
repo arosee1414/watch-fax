@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>watch_fax_backend</RootNamespace>
+    <UserSecretsId>d8061e9b-970f-4bbe-b2d9-096857c35272</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

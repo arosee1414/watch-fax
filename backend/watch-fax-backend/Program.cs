@@ -27,6 +27,12 @@ builder.Services.AddLogging(logging =>
     logging.SetMinimumLevel(LogLevel.Trace);
 });
 
+builder.Services.AddApplicationInsightsTelemetry(new Microsoft.ApplicationInsights.AspNetCore.Extensions.ApplicationInsightsServiceOptions
+{
+    ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],
+    EnableAdaptiveSampling = false
+});
+
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
