@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 export default function Dashboard() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Hello, world!</Text>
+            <Text style={styles.title}>Dashboard</Text>
             <View style={styles.separator} />
         </View>
     );
