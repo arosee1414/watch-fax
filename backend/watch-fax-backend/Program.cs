@@ -50,20 +50,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             OnAuthenticationFailed = context =>
             {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
                 logger.LogError("Authentication failed: {0}", context.Exception.Message);
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>
             {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
                 var claims = context.Principal?.Claims.Select(c => $"{c.Type}: {c.Value}").ToList();
                 logger.LogInformation("Token validated successfully. Claims: {0}", string.Join(", ", claims));
                 return Task.CompletedTask;
             },
             OnChallenge = context =>
             {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<object>>();
                 logger.LogWarning("JWT authentication challenge triggered. Error: {0}", context.ErrorDescription);
                 return Task.CompletedTask;
             }
