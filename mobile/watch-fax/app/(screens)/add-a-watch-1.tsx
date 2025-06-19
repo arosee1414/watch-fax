@@ -12,6 +12,16 @@ const AddAWatch1 = () => {
     const [price, setPrice] = useState<Float | null>(0.0);
     const [productionYear, setProductionYear] = useState<number>();
 
+    const convertToNumber = (value: string | undefined): void => {
+        if (value === undefined || value.trim() === '') {
+            setProductionYear(undefined);
+        }
+        const num = parseFloat(value || '');
+        return isNaN(num)
+            ? setProductionYear(undefined)
+            : setProductionYear(num);
+    };
+
     return (
         <SafeAreaView style={{ backgroundColor: backgroundColor, flex: 1 }}>
             <ScrollView
@@ -43,7 +53,7 @@ const AddAWatch1 = () => {
                         style={styles.textInput}
                         placeholder='$0.00'
                         placeholderTextColor='gray'
-                        value={price}
+                        value={price ?? null}
                         onChangeValue={setPrice}
                         prefix='$'
                         delimiter=','
@@ -74,18 +84,18 @@ const AddAWatch1 = () => {
                         style={styles.textInput}
                     />
                 </View>
-                {/* <View style={{ marginBottom: 20, width: '100%' }}>
+                <View style={{ marginBottom: 20, width: '100%' }}>
                     <Text style={styles.textLabel}>Production year</Text>
                     <TextInput
-                        keyboardType='email-address'
-                        autoCapitalize='none'
+                        keyboardType='numeric'
+                        style={styles.textInput}
                         placeholder='Enter the production year'
                         placeholderTextColor='gray'
-                        onChangeText={parseInt(setProductionYear)}
                         value={productionYear?.toString()}
-                        style={styles.textInput}
+                        onChangeText={convertToNumber}
+                        maxLength={4}
                     />
-                </View> */}
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
