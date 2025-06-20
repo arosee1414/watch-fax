@@ -56,20 +56,6 @@ const AddAWatch1 = () => {
         setIsModalVisible(true);
     };
 
-    useEffect(() => {
-        const test = async () => {
-            const token = await getToken();
-            if (token === null) {
-                console.error('Failed to retrieve authentication token');
-                return;
-            }
-            const client = new WatchFaxClient(token);
-            const response = await client.getAllWatchRecords();
-            console.log(response);
-        };
-        test();
-    }, []);
-
     return (
         <SafeAreaView style={{ backgroundColor: backgroundColor, flex: 1 }}>
             <KeyboardAvoidingView
