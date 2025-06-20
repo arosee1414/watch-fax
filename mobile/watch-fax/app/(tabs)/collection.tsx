@@ -12,7 +12,7 @@ const Collection = () => {
                 style={{ backgroundColor: backgroundColor, flex: 1 }}
             ></SafeAreaView>
             <TouchableOpacity
-                onPress={() => router.push('/add-a-watch-1')}
+                onPress={() => router.push('/add-watch/add-a-watch-1')}
                 style={{
                     display: 'flex',
                     justifyContent: 'center',

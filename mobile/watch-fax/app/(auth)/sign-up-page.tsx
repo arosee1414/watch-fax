@@ -3,7 +3,7 @@ import {
     defaultStyles,
     navyColor,
 } from '@/assets/default-styles';
-import { isClerkAPIResponseError, useAuth, useSignUp } from '@clerk/clerk-expo';
+import { isClerkAPIResponseError, useSignUp } from '@clerk/clerk-expo';
 import React, { useState } from 'react';
 import {
     Keyboard,
@@ -20,7 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ClerkAPIError } from '@clerk/types';
 import Dialog from 'react-native-dialog';
 import { router } from 'expo-router';
-import CheckBox from '@/components/check-circle';
+import CheckCircle from '@/components/check-circle';
 
 const SignUpPage = () => {
     const [email, setEmail] = useState<string>('');
@@ -185,7 +185,7 @@ const SignUpPage = () => {
                                 },
                             ]}
                         >
-                            <CheckBox
+                            <CheckCircle
                                 isChecked={agreeToTerms}
                                 onPress={() => setAgreeToTerms((prev) => !prev)}
                             />

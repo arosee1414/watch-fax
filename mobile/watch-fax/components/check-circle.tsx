@@ -2,13 +2,12 @@ import {
     Pressable,
     StyleProp,
     StyleSheet,
-    Text,
     TextStyle,
-    View,
     ViewStyle,
 } from 'react-native';
 import * as React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { navyColor } from '@/assets/default-styles';
 
 export interface ICheckBoxProps {
     isChecked: boolean;
@@ -17,15 +16,18 @@ export interface ICheckBoxProps {
     iconStyle?: StyleProp<TextStyle>;
 }
 
-const CheckBox = (props: ICheckBoxProps) => {
+const CheckCircle = (props: ICheckBoxProps) => {
+    // const iconName = props.isChecked
+    //     ? 'checkbox-marked'
+    //     : 'checkbox-blank-outline';
     const iconName = props.isChecked
-        ? 'checkbox-marked'
-        : 'checkbox-blank-outline';
+        ? 'checkbox-marked-circle'
+        : 'checkbox-blank-circle-outline';
 
     return (
         <Pressable onPress={props.onPress} style={props.style}>
             <MaterialCommunityIcons
-                style={[{ color: 'black' }, props.iconStyle]}
+                style={[{ color: navyColor }, props.iconStyle]}
                 name={iconName}
                 size={24}
             />
@@ -33,6 +35,4 @@ const CheckBox = (props: ICheckBoxProps) => {
     );
 };
 
-export default CheckBox;
-
-const styles = StyleSheet.create({});
+export default CheckCircle;

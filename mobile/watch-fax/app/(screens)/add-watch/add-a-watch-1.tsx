@@ -15,12 +15,13 @@ import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import CurrencyInput from 'react-native-currency-input';
 import { AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
+import { router } from 'expo-router';
 
 const AddAWatch1 = () => {
     const [brand, setBrand] = useState<string>();
     const [referenceNumber, setReferenceNumber] = useState<string>();
     const [serialNumber, setSerialNumber] = useState<string>();
-    const [price, setPrice] = useState<Float | null>(0.0);
+    const [model, setModel] = useState<string>();
     const [productionYear, setProductionYear] = useState<number>();
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [infoText, setInfoText] = useState<string>();
@@ -84,18 +85,14 @@ const AddAWatch1 = () => {
                         />
                     </View>
                     <View style={{ marginBottom: 20, width: '100%' }}>
-                        <Text style={styles.textLabel}>Purchase price</Text>
-                        <CurrencyInput
-                            style={styles.textInput}
-                            placeholder='$0.00'
+                        <Text style={styles.textLabel}>Model</Text>
+                        <TextInput
+                            autoCapitalize='none'
+                            placeholder='Select a model'
                             placeholderTextColor='gray'
-                            value={price ?? null}
-                            onChangeValue={setPrice}
-                            prefix='$'
-                            delimiter=','
-                            separator='.'
-                            precision={2}
-                            minValue={0}
+                            onChangeText={setBrand}
+                            value={brand}
+                            style={styles.textInput}
                         />
                     </View>
                     <View style={{ marginBottom: 20, width: '100%' }}>
@@ -180,7 +177,9 @@ const AddAWatch1 = () => {
                             height: 50,
                             marginTop: 100,
                         }}
-                        //onPress={onSignInPress}
+                        onPress={() =>
+                            router.push('/(screens)/add-watch/add-a-watch-2')
+                        }
                     >
                         <Text
                             style={{

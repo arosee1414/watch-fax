@@ -49,8 +49,7 @@ const LoginPage = () => {
                 });
             if (createdSessionId) {
                 setActive!({ session: createdSessionId });
-                console.log('User is signed in');
-                //router.replace('/dashboard');
+                router.replace('/dashboard');
             } else {
                 //handle errors
             }
