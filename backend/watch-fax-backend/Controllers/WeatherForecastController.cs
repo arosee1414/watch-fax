@@ -28,8 +28,6 @@ namespace watch_fax_backend.Controllers
     [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            var test = new WatchRecord(){ Id = "asdfasdfasd" };
-            var res = await _cosmosContext.UserCollectionsContainerName.InsertItem<WatchRecord>(test);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

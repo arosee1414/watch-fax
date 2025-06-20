@@ -6,9 +6,9 @@ namespace watch_fax_backend.Infrastructure.Configuration.Cosmos
     {
         public CosmosContext(CosmosClient cosmosClient, CosmosConfiguration cosmosConfiguration)
         {
-            UserCollectionsContainerName = cosmosClient.GetContainer(cosmosConfiguration.DatabaseName, cosmosConfiguration.UserCollectionsContainerName);
+            UserCollectionsContainer = cosmosClient.GetContainer(cosmosConfiguration.DatabaseName, cosmosConfiguration.UserCollectionsContainerName);
         }
 
-        public Container UserCollectionsContainerName { get; }
+        public Container UserCollectionsContainer { get; }
     }
 }

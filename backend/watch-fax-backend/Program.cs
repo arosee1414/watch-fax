@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.Net;
 using watch_fax_backend.Infrastructure.Configuration.Cosmos;
+using watch_fax_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ builder.Services.AddSingleton<CosmosContext>(provider =>
     var cosmosClient = provider.GetRequiredService<CosmosClient>();
     return new CosmosContext(cosmosClient, cosmosConfig);
 });
+
+builder.Services.AddSingleton<UserCollectionsService>();
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
