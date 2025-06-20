@@ -13,6 +13,8 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import CurrencyInput from 'react-native-currency-input';
+import { AntDesign } from '@expo/vector-icons';
+import Modal from 'react-native-modal';
 
 const AddAWatch1 = () => {
     const [brand, setBrand] = useState<string>();
@@ -20,6 +22,8 @@ const AddAWatch1 = () => {
     const [serialNumber, setSerialNumber] = useState<string>();
     const [price, setPrice] = useState<Float | null>(0.0);
     const [productionYear, setProductionYear] = useState<number>();
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [infoText, setInfoText] = useState<string>();
 
     const convertToNumber = (value: string | undefined): void => {
         if (value === undefined || value.trim() === '') {
@@ -29,6 +33,24 @@ const AddAWatch1 = () => {
         return isNaN(num)
             ? setProductionYear(undefined)
             : setProductionYear(num);
+    };
+
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
+    };
+
+    const onClickReferenceNumberInfo = () => {
+        setInfoText(
+            'The reference number is usually engraved on the caseback or between the lugs of your watch. It identifies the specific model and can also be found on the original box or paperwork. It’s typically a mix of letters and numbers like ‘116610LN’ or ‘W7100015’.'
+        );
+        setIsModalVisible(true);
+    };
+
+    const onClickSerialNumberInfo = () => {
+        setInfoText(
+            'The serial number is a unique identifier for your specific watch. It’s often engraved on the caseback, between the lugs, or on the rehaut (inner bezel). You might also find it on the warranty card or original papers. It usually looks like a string of numbers or letters like ‘F834529’ or ‘947XXXX’.'
+        );
+        setIsModalVisible(true);
     };
 
     return (
@@ -77,7 +99,28 @@ const AddAWatch1 = () => {
                         />
                     </View>
                     <View style={{ marginBottom: 20, width: '100%' }}>
-                        <Text style={styles.textLabel}>Reference number</Text>
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 10,
+                            }}
+                        >
+                            <Text style={styles.textLabel}>
+                                Reference number
+                            </Text>
+                            <TouchableOpacity
+                                onPress={onClickReferenceNumberInfo}
+                            >
+                                <AntDesign
+                                    name='infocirlceo'
+                                    size={17}
+                                    color='black'
+                                />
+                            </TouchableOpacity>
+                        </View>
+
                         <TextInput
                             autoCapitalize='none'
                             placeholder='Enter the reference number'
@@ -88,7 +131,23 @@ const AddAWatch1 = () => {
                         />
                     </View>
                     <View style={{ marginBottom: 20, width: '100%' }}>
-                        <Text style={styles.textLabel}>Serial number</Text>
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 10,
+                            }}
+                        >
+                            <Text style={styles.textLabel}>Serial number</Text>
+                            <TouchableOpacity onPress={onClickSerialNumberInfo}>
+                                <AntDesign
+                                    name='infocirlceo'
+                                    size={17}
+                                    color='black'
+                                />
+                            </TouchableOpacity>
+                        </View>
                         <TextInput
                             autoCapitalize='none'
                             placeholder='Enter the serial number'
@@ -133,6 +192,30 @@ const AddAWatch1 = () => {
                             Continue
                         </Text>
                     </TouchableOpacity>
+                    <Modal
+                        isVisible={isModalVisible}
+                        onBackdropPress={toggleModal}
+                        backdropOpacity={0.5}
+                        animationIn='slideInUp'
+                        animationOut='slideOutDown'
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <View
+                            style={{
+                                borderWidth: 1,
+                                borderColor: navyColor,
+                                backgroundColor: backgroundColor,
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <Text>{infoText}</Text>
+                        </View>
+                    </Modal>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
