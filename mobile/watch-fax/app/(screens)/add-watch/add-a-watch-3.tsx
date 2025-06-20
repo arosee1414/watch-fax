@@ -1,6 +1,6 @@
 import { backgroundColor, goldColor, navyColor } from '@/assets/default-styles';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
@@ -18,6 +18,7 @@ import { router } from 'expo-router';
 const AddAWatch3 = () => {
     const [condition, setCondition] = useState<string>();
     const [purchaseStory, setPurchaseStory] = useState<string>();
+    const [watchImages, setWatchImages] = useState<string[]>([]);
 
     const onAddPictures = async () => {
         try {
@@ -29,8 +30,13 @@ const AddAWatch3 = () => {
                 allowsMultipleSelection: true,
             });
             if (!result.canceled) {
-                console.log(result);
-                const base64 = `data:image/png;base64,${result.assets[0].base64}`;
+                setWatchImages([]);
+                result.assets.forEach((image) => {
+                    setWatchImages((prev) => [
+                        ...prev,
+                        `data:image/png;base64,${result.assets[0].base64}`,
+                    ]);
+                });
             }
         } catch (err) {
             //do something?
@@ -101,11 +107,30 @@ const AddAWatch3 = () => {
                                 }}
                                 onPress={onAddPictures}
                             >
-                                <MaterialCommunityIcons
-                                    name='file-image-plus-outline'
-                                    size={35}
-                                    color='black'
-                                />
+                                {watchImages.length > 0 ? (
+                                    <>
+                                        <MaterialCommunityIcons
+                                            name='file-image-plus-outline'
+                                            size={35}
+                                            color='black'
+                                        />
+                                        <Text
+                                            style={{
+                                                color: navyColor,
+                                                position: 'absolute',
+                                                top: 35,
+                                                right: 35,
+                                                fontFamily: 'roboto-black',
+                                            }}
+                                        >{`(${watchImages.length})`}</Text>
+                                    </>
+                                ) : (
+                                    <MaterialCommunityIcons
+                                        name='file-image-plus-outline'
+                                        size={35}
+                                        color={navyColor}
+                                    />
+                                )}
                             </TouchableOpacity>
                         </View>
                     </View>
