@@ -10,6 +10,7 @@ import {
 import { tokenCache } from './utils/token-cache';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
+import AddAWatchContextProvider from './contexts/add-watch-context';
 
 export default function RootLayout(): React.JSX.Element {
     const [loaded, error] = useFonts({
@@ -34,7 +35,9 @@ export default function RootLayout(): React.JSX.Element {
                 tokenCache={tokenCache}
             >
                 <ClerkLoaded>
-                    <RootLayoutNav />
+                    <AddAWatchContextProvider>
+                        <RootLayoutNav />
+                    </AddAWatchContextProvider>
                 </ClerkLoaded>
             </ClerkProvider>
         </GestureHandlerRootView>

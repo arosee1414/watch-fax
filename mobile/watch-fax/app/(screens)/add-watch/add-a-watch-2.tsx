@@ -18,15 +18,15 @@ import YesNoCheck from '@/components/yes-no-check';
 import { router } from 'expo-router';
 
 const AddAWatch2 = () => {
-    const [date, setDate] = useState(new Date());
+    const [purchaseDate, setPurchaseDate] = useState(new Date());
     const [price, setPrice] = useState<number | null>(0.0);
     const [hasPapers, setHasPapers] = useState<boolean>(false);
     const [hasOriginalBox, setHasOriginalBox] = useState<boolean>(false);
     const [hasRecordOfAuth, setHasRecordOfAuth] = useState<boolean>(false);
 
     const onChangeDate = (event: any, selectedDate: any) => {
-        const currentDate = selectedDate || date;
-        setDate(currentDate);
+        const currentDate = selectedDate || purchaseDate;
+        setPurchaseDate(currentDate);
     };
 
     return (
@@ -45,7 +45,7 @@ const AddAWatch2 = () => {
                         <DateTimePicker
                             maximumDate={new Date()}
                             testID='dateTimePicker'
-                            value={date}
+                            value={purchaseDate}
                             mode='date'
                             is24Hour={true}
                             onChange={onChangeDate}

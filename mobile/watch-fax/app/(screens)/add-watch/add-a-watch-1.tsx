@@ -15,11 +15,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { router } from 'expo-router';
-import { useAuth } from '@clerk/clerk-expo';
-import WatchFaxClient from '@/app/clients/watch-fax-client';
 
 const AddAWatch1 = () => {
-    const { getToken } = useAuth();
     const [brand, setBrand] = useState<string>();
     const [referenceNumber, setReferenceNumber] = useState<string>();
     const [serialNumber, setSerialNumber] = useState<string>();
