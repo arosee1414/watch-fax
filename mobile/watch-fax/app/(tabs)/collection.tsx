@@ -64,6 +64,7 @@ const Collection = () => {
                         display: 'flex',
                         paddingTop: 0,
                         alignItems: 'center',
+                        gap: 20,
                     }}
                     data={watches}
                     renderItem={({ item }) => {
