@@ -15,6 +15,7 @@ import {
 import CurrencyInput from 'react-native-currency-input';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import YesNoCheck from '@/components/yes-no-check';
+import { router } from 'expo-router';
 
 const AddAWatch2 = () => {
     const [date, setDate] = useState(new Date());
@@ -96,7 +97,12 @@ const AddAWatch2 = () => {
                         />
                     </View>
 
-                    <TouchableOpacity style={styles.continueButton}>
+                    <TouchableOpacity
+                        style={styles.continueButton}
+                        onPress={() =>
+                            router.push('/(screens)/add-watch/add-a-watch-3')
+                        }
+                    >
                         <Text style={styles.continueButtonText}>Continue</Text>
                     </TouchableOpacity>
                 </ScrollView>
