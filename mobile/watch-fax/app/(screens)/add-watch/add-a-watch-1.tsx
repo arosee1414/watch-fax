@@ -11,8 +11,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Float } from 'react-native/Libraries/Types/CodegenTypes';
-import CurrencyInput from 'react-native-currency-input';
+
 import { AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { router } from 'expo-router';
@@ -74,7 +73,18 @@ const AddAWatch1 = () => {
                     }}
                 >
                     <View style={{ marginBottom: 20, width: '100%' }}>
-                        <Text style={styles.textLabel}>Brand</Text>
+                        <View style={{ display: 'flex', flexDirection: 'row' }}>
+                            <Text style={styles.textLabel}>Brand</Text>
+                            <Text
+                                style={{
+                                    marginLeft: 5,
+                                    color: 'red',
+                                    fontFamily: 'roboto-black',
+                                }}
+                            >
+                                *
+                            </Text>
+                        </View>
                         <TextInput
                             autoCapitalize='none'
                             placeholder='Select a brand'
@@ -85,13 +95,24 @@ const AddAWatch1 = () => {
                         />
                     </View>
                     <View style={{ marginBottom: 20, width: '100%' }}>
-                        <Text style={styles.textLabel}>Model</Text>
+                        <View style={{ display: 'flex', flexDirection: 'row' }}>
+                            <Text style={styles.textLabel}>Model</Text>
+                            <Text
+                                style={{
+                                    marginLeft: 5,
+                                    color: 'red',
+                                    fontFamily: 'roboto-black',
+                                }}
+                            >
+                                *
+                            </Text>
+                        </View>
                         <TextInput
                             autoCapitalize='none'
                             placeholder='Select a model'
                             placeholderTextColor='gray'
-                            onChangeText={setBrand}
-                            value={brand}
+                            onChangeText={setModel}
+                            value={model}
                             style={styles.textInput}
                         />
                     </View>
@@ -104,9 +125,25 @@ const AddAWatch1 = () => {
                                 gap: 10,
                             }}
                         >
-                            <Text style={styles.textLabel}>
-                                Reference number
-                            </Text>
+                            <View
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                <Text style={styles.textLabel}>
+                                    Reference number
+                                </Text>
+                                <Text
+                                    style={{
+                                        marginLeft: 5,
+                                        color: 'red',
+                                        fontFamily: 'roboto-black',
+                                    }}
+                                >
+                                    *
+                                </Text>
+                            </View>
                             <TouchableOpacity
                                 onPress={onClickReferenceNumberInfo}
                             >
@@ -167,6 +204,14 @@ const AddAWatch1 = () => {
                         />
                     </View>
                     <TouchableOpacity
+                        disabled={
+                            brand?.trim() === undefined ||
+                            brand?.trim() === '' ||
+                            model?.trim() === undefined ||
+                            model.trim() === '' ||
+                            referenceNumber?.trim() === undefined ||
+                            referenceNumber.trim() === ''
+                        }
                         style={{
                             backgroundColor: navyColor,
                             padding: 10,
