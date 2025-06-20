@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.Net;
+using watch_fax_backend.Infrastructure.Configuration.Cosmos;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var clerkAuthority = builder.Configuration["ClerkConfiguration:Authority"];
 builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
+builder.Services.Configure<CosmosConfiguration>(builder.Configuration.GetSection("CosmosConfiguration"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,6 +35,27 @@ builder.Services.AddApplicationInsightsTelemetry(new Microsoft.ApplicationInsigh
 {
     ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],
     EnableAdaptiveSampling = false
+});
+
+builder.Services.AddSingleton(provider =>
+{
+    var cosmosConfig = provider.GetRequiredService<IOptions<CosmosConfiguration>>().Value;
+    var cosmosClientOptions = new CosmosClientOptions
+    {
+        SerializerOptions = new CosmosSerializationOptions
+        {
+            PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+        }
+    };
+    var cosmosClient = new CosmosClient(cosmosConfig.ConnectionString, cosmosClientOptions);
+    return cosmosClient;
+});
+
+builder.Services.AddSingleton<CosmosContext>(provider =>
+{
+    var cosmosConfig = provider.GetRequiredService<IOptions<CosmosConfiguration>>().Value;
+    var cosmosClient = provider.GetRequiredService<CosmosClient>();
+    return new CosmosContext(cosmosClient, cosmosConfig);
 });
 
 // Configure JWT authentication

@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using watch_fax_backend.Infrastructure.Configuration.Cosmos;
+using watch_fax_backend.Infrastructure.Extensions;
+using watch_fax_backend.Models;
 
 namespace watch_fax_backend.Controllers
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("api/v1/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
@@ -14,15 +17,19 @@ namespace watch_fax_backend.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly CosmosContext _cosmosContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, CosmosContext cosmosContext)
         {
             _logger = logger;
+            _cosmosContext = cosmosContext ?? throw new ArgumentNullException(nameof(cosmosContext));
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+    [HttpGet(Name = "GetWeatherForecast")]
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            var test = new WatchRecord(){ Id = "asdfasdfasd" };
+            var res = await _cosmosContext.UserCollectionsContainerName.InsertItem<WatchRecord>(test);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
