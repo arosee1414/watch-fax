@@ -33,7 +33,6 @@ const AddAWatch2 = () => {
 
     useEffect(() => {
         if (addAWatchContext) {
-            console.log(hasPapers, hasOriginalBox, hasRecordOfAuth);
             addAWatchContext.setPurchaseDate?.(purchaseDate);
             addAWatchContext.setPrice?.(price);
             addAWatchContext.setHasPapers?.(hasPapers);
