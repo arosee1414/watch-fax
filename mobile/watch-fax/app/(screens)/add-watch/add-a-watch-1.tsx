@@ -1,5 +1,5 @@
 import { backgroundColor, navyColor } from '@/assets/default-styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     View,
@@ -15,8 +15,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { router } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
+import WatchFaxClient from '@/app/clients/watch-fax-client';
 
 const AddAWatch1 = () => {
+    const { getToken } = useAuth();
     const [brand, setBrand] = useState<string>();
     const [referenceNumber, setReferenceNumber] = useState<string>();
     const [serialNumber, setSerialNumber] = useState<string>();
@@ -52,6 +55,20 @@ const AddAWatch1 = () => {
         );
         setIsModalVisible(true);
     };
+
+    useEffect(() => {
+        const test = async () => {
+            const token = await getToken();
+            if (token === null) {
+                console.error('Failed to retrieve authentication token');
+                return;
+            }
+            const client = new WatchFaxClient(token);
+            const response = await client.getAllWatchRecords();
+            console.log(response);
+        };
+        test();
+    }, []);
 
     return (
         <SafeAreaView style={{ backgroundColor: backgroundColor, flex: 1 }}>
