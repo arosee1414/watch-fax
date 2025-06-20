@@ -1,6 +1,6 @@
 import { backgroundColor, navyColor } from '@/assets/default-styles';
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
@@ -16,6 +16,7 @@ import CurrencyInput from 'react-native-currency-input';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import YesNoCheck from '@/components/yes-no-check';
 import { router } from 'expo-router';
+import { useAddAWatchContext } from '@/app/contexts/add-watch-context';
 
 const AddAWatch2 = () => {
     const [purchaseDate, setPurchaseDate] = useState(new Date());
@@ -23,11 +24,23 @@ const AddAWatch2 = () => {
     const [hasPapers, setHasPapers] = useState<boolean>(false);
     const [hasOriginalBox, setHasOriginalBox] = useState<boolean>(false);
     const [hasRecordOfAuth, setHasRecordOfAuth] = useState<boolean>(false);
+    const addAWatchContext = useAddAWatchContext();
 
     const onChangeDate = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || purchaseDate;
         setPurchaseDate(currentDate);
     };
+
+    useEffect(() => {
+        if (addAWatchContext) {
+            console.log(hasPapers, hasOriginalBox, hasRecordOfAuth);
+            addAWatchContext.setPurchaseDate?.(purchaseDate);
+            addAWatchContext.setPrice?.(price);
+            addAWatchContext.setHasPapers?.(hasPapers);
+            addAWatchContext.setHasOriginalBox?.(hasOriginalBox);
+            addAWatchContext.setHasRecordOfAuth?.(hasRecordOfAuth);
+        }
+    }, [purchaseDate, price, hasPapers, hasOriginalBox, hasRecordOfAuth]);
 
     return (
         <SafeAreaView style={styles.safeArea}>

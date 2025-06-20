@@ -10,8 +10,10 @@ interface IAddAWatchContextProps {
     setReferenceNumber?: Dispatch<React.SetStateAction<string | undefined>>;
     serialNumber?: string;
     setSerialNumber?: Dispatch<React.SetStateAction<string | undefined>>;
-    purchaseDate?: number;
-    setPurchaseDate?: Dispatch<React.SetStateAction<number | undefined>>;
+    productionYear?: number;
+    setProductionYear?: Dispatch<React.SetStateAction<number | undefined>>;
+    purchaseDate?: Date;
+    setPurchaseDate?: Dispatch<React.SetStateAction<Date | undefined>>;
     price?: number | null;
     setPrice?: Dispatch<React.SetStateAction<number | null>>;
     hasPapers?: boolean;
@@ -41,7 +43,7 @@ export const AddAWatchContextProvider = ({ children }: any) => {
     const [serialNumber, setSerialNumber] = React.useState<string>();
     const [model, setModel] = React.useState<string>();
     const [productionYear, setProductionYear] = React.useState<number>();
-    const [purchaseDate, setPurchaseDate] = React.useState<number>();
+    const [purchaseDate, setPurchaseDate] = React.useState<Date>();
     const [price, setPrice] = React.useState<number | null>(0.0);
     const [hasPapers, setHasPapers] = React.useState<boolean>(false);
     const [hasOriginalBox, setHasOriginalBox] = React.useState<boolean>(false);
@@ -60,6 +62,8 @@ export const AddAWatchContextProvider = ({ children }: any) => {
         setReferenceNumber,
         serialNumber,
         setSerialNumber,
+        productionYear,
+        setProductionYear,
         purchaseDate: purchaseDate, // convert Date to number
         setPurchaseDate: setPurchaseDate,
         price,

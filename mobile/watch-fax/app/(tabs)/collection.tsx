@@ -4,15 +4,20 @@ import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAddAWatchContext } from '../contexts/add-watch-context';
 
 const Collection = () => {
+    const addAWatchContext = useAddAWatchContext();
     return (
         <>
             <SafeAreaView
                 style={{ backgroundColor: backgroundColor, flex: 1 }}
             ></SafeAreaView>
             <TouchableOpacity
-                onPress={() => router.push('/add-watch/add-a-watch-1')}
+                onPress={() => {
+                    addAWatchContext.clearAllInfo?.();
+                    router.push('/add-watch/add-a-watch-1');
+                }}
                 style={{
                     display: 'flex',
                     justifyContent: 'center',

@@ -14,14 +14,37 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
+import { useAddAWatchContext } from '@/app/contexts/add-watch-context';
+import { useAuth } from '@clerk/clerk-expo';
+import WatchFaxClient from '@/app/clients/watch-fax-client';
+import { WatchRecordCreateRequest } from '@/app/clients/generatedClient';
+import Modal from 'react-native-modal';
 
 const AddAWatch3 = () => {
     const [condition, setCondition] = useState<string>();
     const [purchaseStory, setPurchaseStory] = useState<string>();
     const [watchImages, setWatchImages] = useState<string[]>([]);
+    const addAWatchContext = useAddAWatchContext();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isErrorModalVisible, setIsErrorModalVisible] =
+        useState<boolean>(false);
+    const { getToken } = useAuth();
+
+    useEffect(() => {
+        if (addAWatchContext) {
+            addAWatchContext.setCondition?.(condition);
+            addAWatchContext.setPurchaseStory?.(purchaseStory);
+            addAWatchContext.setWatchImages?.(watchImages);
+        }
+    }, [condition, purchaseStory, watchImages]);
+
+    const toggleModal = () => {
+        setIsErrorModalVisible(!isErrorModalVisible);
+    };
 
     const onAddPictures = async () => {
         try {
+            setIsLoading(true);
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: 'images',
                 allowsEditing: false,
@@ -39,8 +62,38 @@ const AddAWatch3 = () => {
                 });
             }
         } catch (err) {
-            //do something?
             console.error(err);
+        }
+    };
+
+    const uploadWatch = async () => {
+        try {
+            const token = await getToken();
+            if (token === null) {
+                console.error('Failed to retrieve authentication token');
+                return;
+            }
+            const client = new WatchFaxClient(token);
+            const request = new WatchRecordCreateRequest({
+                brand: addAWatchContext.brand,
+                descriptionOfCondition: addAWatchContext.condition,
+                hasBox: addAWatchContext.hasOriginalBox,
+                hasPapers: addAWatchContext.hasPapers,
+                hasRecordOfAuthentication: addAWatchContext.hasRecordOfAuth,
+                model: addAWatchContext.model,
+                productionYear: addAWatchContext.productionYear,
+                purchaseDate: addAWatchContext.purchaseDate?.getTime(),
+                purchasePrice: addAWatchContext.price ?? 0,
+                referenceNumber: addAWatchContext.referenceNumber,
+                serialNumber: addAWatchContext.serialNumber,
+                story: addAWatchContext.purchaseStory,
+            });
+            await client.createWatch(request);
+            router.replace('/(tabs)/collection');
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -135,9 +188,41 @@ const AddAWatch3 = () => {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.addWatchButton}>
+                    <TouchableOpacity
+                        disabled={isLoading}
+                        onPress={() => uploadWatch()}
+                        style={styles.addWatchButton}
+                    >
                         <Text style={styles.addWatchButtonText}>Add watch</Text>
                     </TouchableOpacity>
+
+                    <Modal
+                        isVisible={isErrorModalVisible}
+                        onBackdropPress={toggleModal}
+                        backdropOpacity={0.5}
+                        animationIn='slideInUp'
+                        animationOut='slideOutDown'
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <View
+                            style={{
+                                borderWidth: 1,
+                                borderColor: navyColor,
+                                backgroundColor: backgroundColor,
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <Text>
+                                There was an error uploading your watch. Please
+                                try again later.
+                            </Text>
+                        </View>
+                    </Modal>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>

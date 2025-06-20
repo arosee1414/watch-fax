@@ -14,7 +14,7 @@
 
         public long? PurchaseDate { get; set; }
 
-        public int? PurchasePrice { get; set; }
+        public float? PurchasePrice { get; set; }
 
         public bool? HasPapers { get; set; }
 

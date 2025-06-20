@@ -3,8 +3,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import React from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
+import { useAddAWatchContext } from '../contexts/add-watch-context';
 
 const Layout = () => {
+    const addAWatchContext = useAddAWatchContext();
     return (
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen
@@ -25,6 +27,7 @@ const Layout = () => {
                             size={24}
                             color='black'
                             onPress={() => {
+                                addAWatchContext.clearAllInfo?.();
                                 Keyboard.dismiss();
                                 router.back();
                             }}

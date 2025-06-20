@@ -15,6 +15,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { router } from 'expo-router';
+import { useAddAWatchContext } from '@/app/contexts/add-watch-context';
 
 const AddAWatch1 = () => {
     const [brand, setBrand] = useState<string>();
@@ -24,6 +25,7 @@ const AddAWatch1 = () => {
     const [productionYear, setProductionYear] = useState<number>();
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [infoText, setInfoText] = useState<string>();
+    const addAWatchContext = useAddAWatchContext();
 
     const convertToNumber = (value: string | undefined): void => {
         if (value === undefined || value.trim() === '') {
@@ -52,6 +54,16 @@ const AddAWatch1 = () => {
         );
         setIsModalVisible(true);
     };
+
+    useEffect(() => {
+        if (addAWatchContext) {
+            addAWatchContext.setBrand?.(brand);
+            addAWatchContext.setReferenceNumber?.(referenceNumber);
+            addAWatchContext.setSerialNumber?.(serialNumber);
+            addAWatchContext.setModel?.(model);
+            addAWatchContext.setProductionYear?.(productionYear);
+        }
+    }, [brand, referenceNumber, serialNumber, model, productionYear]);
 
     return (
         <SafeAreaView style={{ backgroundColor: backgroundColor, flex: 1 }}>

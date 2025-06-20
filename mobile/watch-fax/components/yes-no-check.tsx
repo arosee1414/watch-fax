@@ -40,7 +40,7 @@ const YesNoCheck = (props: IYesNoCheckProps) => {
                     isChecked={isYesChecked}
                     onPress={() => {
                         onCheckYes();
-                        props.onPress(isYesChecked);
+                        props.onPress(true);
                     }}
                 />
                 <Text style={{ marginLeft: 5 }}>Yes</Text>
@@ -57,7 +57,7 @@ const YesNoCheck = (props: IYesNoCheckProps) => {
                     isChecked={!isYesChecked}
                     onPress={() => {
                         onCheckNo();
-                        props.onPress(isYesChecked);
+                        props.onPress(false);
                     }}
                 />
                 <Text style={{ marginLeft: 5 }}>No</Text>
