@@ -3,7 +3,6 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
     KeyboardAvoidingView,
-    Modal,
     Platform,
     SafeAreaView,
     ScrollView,
@@ -14,54 +13,45 @@ import {
     Text,
 } from 'react-native';
 import CurrencyInput from 'react-native-currency-input';
-import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import CheckCircle from '@/components/check-circle';
 import YesNoCheck from '@/components/yes-no-check';
 
 const AddAWatch2 = () => {
     const [date, setDate] = useState(new Date());
-    const [price, setPrice] = useState<Float | null>(0.0);
+    const [price, setPrice] = useState<number | null>(0.0);
     const [hasPapers, setHasPapers] = useState<boolean>(false);
     const [hasOriginalBox, setHasOriginalBox] = useState<boolean>(false);
     const [hasRecordOfAuth, setHasRecordOfAuth] = useState<boolean>(false);
 
     const onChangeDate = (event: any, selectedDate: any) => {
-        const currentDate = selectedDate;
+        const currentDate = selectedDate || date;
         setDate(currentDate);
     };
 
     return (
-        <SafeAreaView style={{ backgroundColor: backgroundColor, flex: 1 }}>
+        <SafeAreaView style={styles.safeArea}>
             <KeyboardAvoidingView
                 keyboardVerticalOffset={100}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{ flex: 1 }}
+                style={styles.keyboardAvoidingView}
             >
                 <ScrollView
-                    style={{
-                        flex: 1,
-                        paddingVertical: 20,
-                        paddingHorizontal: 40,
-                    }}
-                    contentContainerStyle={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollViewContent}
                 >
-                    <View style={{ marginBottom: 20, width: '100%' }}>
+                    <View style={styles.inputGroup}>
                         <Text style={styles.textLabel}>Purchase date</Text>
                         <DateTimePicker
                             maximumDate={new Date()}
                             testID='dateTimePicker'
                             value={date}
-                            mode={'date'}
+                            mode='date'
                             is24Hour={true}
                             onChange={onChangeDate}
                         />
                     </View>
-                    <View style={{ marginBottom: 20, width: '100%' }}>
+
+                    <View style={styles.inputGroup}>
                         <Text style={styles.textLabel}>Purchase price</Text>
                         <CurrencyInput
                             style={styles.textInput}
@@ -76,55 +66,38 @@ const AddAWatch2 = () => {
                             minValue={0}
                         />
                     </View>
-                    <View style={{ marginBottom: 30, width: '100%' }}>
+
+                    <View style={styles.inputGroupWithMargin}>
                         <Text style={styles.textLabel}>Papers?</Text>
                         <YesNoCheck
-                            style={{ marginLeft: 10, gap: 100, marginTop: 20 }}
+                            style={styles.yesNoCheck}
                             isYesChecked={hasPapers}
                             onPress={setHasPapers}
                         />
                     </View>
-                    <View style={{ marginBottom: 30, width: '100%' }}>
+
+                    <View style={styles.inputGroupWithMargin}>
                         <Text style={styles.textLabel}>Original box?</Text>
                         <YesNoCheck
-                            style={{ marginLeft: 10, gap: 100, marginTop: 20 }}
+                            style={styles.yesNoCheck}
                             isYesChecked={hasOriginalBox}
                             onPress={setHasOriginalBox}
                         />
                     </View>
-                    <View style={{ marginBottom: 30, width: '100%' }}>
+
+                    <View style={styles.inputGroupWithMargin}>
                         <Text style={styles.textLabel}>
                             Record of authentication?
                         </Text>
                         <YesNoCheck
-                            style={{ marginLeft: 10, gap: 100, marginTop: 20 }}
+                            style={styles.yesNoCheck}
                             isYesChecked={hasRecordOfAuth}
                             onPress={setHasRecordOfAuth}
                         />
                     </View>
 
-                    <TouchableOpacity
-                        style={{
-                            backgroundColor: navyColor,
-                            padding: 10,
-                            borderRadius: 10,
-                            alignItems: 'center',
-                            width: '100%',
-                            justifyContent: 'center',
-                            height: 50,
-                            marginTop: 100,
-                        }}
-                        //onPress={onSignInPress}
-                    >
-                        <Text
-                            style={{
-                                color: 'white',
-                                fontSize: 24,
-                                fontFamily: 'roboto-black',
-                            }}
-                        >
-                            Continue
-                        </Text>
+                    <TouchableOpacity style={styles.continueButton}>
+                        <Text style={styles.continueButtonText}>Continue</Text>
                     </TouchableOpacity>
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -133,6 +106,30 @@ const AddAWatch2 = () => {
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        backgroundColor: backgroundColor,
+        flex: 1,
+    },
+    keyboardAvoidingView: {
+        flex: 1,
+    },
+    scrollView: {
+        flex: 1,
+        paddingVertical: 20,
+        paddingHorizontal: 40,
+    },
+    scrollViewContent: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    inputGroup: {
+        marginBottom: 20,
+        width: '100%',
+    },
+    inputGroupWithMargin: {
+        marginBottom: 30,
+        width: '100%',
+    },
     textLabel: {
         color: navyColor,
         fontSize: 24,
@@ -148,6 +145,26 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: 'white',
         padding: 10,
+        fontFamily: 'roboto-black',
+    },
+    yesNoCheck: {
+        marginLeft: 10,
+        gap: 100,
+        marginTop: 20,
+    },
+    continueButton: {
+        backgroundColor: navyColor,
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+        height: 50,
+        marginTop: 100,
+    },
+    continueButtonText: {
+        color: 'white',
+        fontSize: 24,
         fontFamily: 'roboto-black',
     },
 });
