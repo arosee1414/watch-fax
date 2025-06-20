@@ -1,18 +1,76 @@
 import { backgroundColor, goldColor, navyColor } from '@/assets/default-styles';
 import { AntDesign } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
+import React, { useCallback, useState } from 'react';
+import {
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAddAWatchContext } from '../contexts/add-watch-context';
+import { useAuth } from '@clerk/clerk-expo';
+import WatchFaxClient from '../clients/watch-fax-client';
+import { WatchRecord } from '../clients/generatedClient';
+import WatchItem from '@/components/watch-item';
 
 const Collection = () => {
+    const { getToken } = useAuth();
+    const [watches, setWatches] = useState<WatchRecord[]>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const fetchWatches = async () => {
+        try {
+            const token = await getToken();
+            if (token === null) {
+                console.error('Failed to retrieve authentication token');
+                return;
+            }
+            const client = new WatchFaxClient(token);
+            const watches = await client.getAllWatchRecords();
+            setWatches(watches);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchWatches();
+        }, [])
+    );
+
     const addAWatchContext = useAddAWatchContext();
     return (
         <>
             <SafeAreaView
-                style={{ backgroundColor: backgroundColor, flex: 1 }}
-            ></SafeAreaView>
+                style={{
+                    backgroundColor: backgroundColor,
+                    flex: 1,
+                }}
+            >
+                <FlatList
+                    style={{
+                        flex: 1,
+                    }}
+                    contentContainerStyle={{
+                        alignSelf: 'flex-start',
+                        flex: 1,
+                        width: '100%',
+                        display: 'flex',
+                        paddingTop: 0,
+                        alignItems: 'center',
+                    }}
+                    data={watches}
+                    renderItem={({ item }) => {
+                        return <WatchItem watch={item} />;
+                    }}
+                />
+            </SafeAreaView>
             <TouchableOpacity
                 onPress={() => {
                     addAWatchContext.clearAllInfo?.();
