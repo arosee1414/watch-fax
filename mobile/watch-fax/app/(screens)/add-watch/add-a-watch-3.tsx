@@ -17,8 +17,11 @@ import { router } from 'expo-router';
 import { useAddAWatchContext } from '@/app/contexts/add-watch-context';
 import { useAuth } from '@clerk/clerk-expo';
 import WatchFaxClient from '@/app/clients/watch-fax-client';
-import { WatchRecordCreateRequest } from '@/app/clients/generatedClient';
+import { FileParameter } from '@/app/clients/generatedClient';
 import Modal from 'react-native-modal';
+import { ImagePickerAsset } from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import mime from 'mime';
 
 const AddAWatch3 = () => {
     const [condition, setCondition] = useState<string>();
@@ -44,26 +47,44 @@ const AddAWatch3 = () => {
 
     const onAddPictures = async () => {
         try {
-            setIsLoading(true);
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: 'images',
                 allowsEditing: false,
                 quality: 0.75,
-                base64: true,
+                base64: false,
                 allowsMultipleSelection: true,
             });
             if (!result.canceled) {
                 setWatchImages([]);
                 result.assets.forEach((image) => {
-                    setWatchImages((prev) => [
-                        ...prev,
-                        `data:image/png;base64,${result.assets[0].base64}`,
-                    ]);
+                    setWatchImages((prev) => [...prev, image.uri]);
                 });
             }
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const uriToFileParameter = async (
+        uri: string,
+        index: number
+    ): Promise<FileParameter> => {
+        const fileInfo = await FileSystem.getInfoAsync(uri);
+        if (!fileInfo.exists) throw new Error('File not found');
+
+        const fileType = mime.getType(uri) || 'image/jpeg'; // fallback
+        const fileName = uri.split('/').pop() ?? `image_${index}.jpg`;
+
+        const fileBlob = {
+            data: {
+                uri,
+                type: fileType,
+                name: fileName,
+            },
+            fileName,
+        };
+
+        return fileBlob as FileParameter;
     };
 
     const uploadWatch = async () => {
@@ -74,24 +95,34 @@ const AddAWatch3 = () => {
                 return;
             }
             const client = new WatchFaxClient(token);
-            const request = new WatchRecordCreateRequest({
-                brand: addAWatchContext.brand,
-                descriptionOfCondition: addAWatchContext.condition,
-                hasBox: addAWatchContext.hasOriginalBox,
-                hasPapers: addAWatchContext.hasPapers,
-                hasRecordOfAuthentication: addAWatchContext.hasRecordOfAuth,
-                model: addAWatchContext.model,
-                productionYear: addAWatchContext.productionYear,
-                purchaseDate: addAWatchContext.purchaseDate?.getTime(),
-                purchasePrice: addAWatchContext.price ?? 0,
-                referenceNumber: addAWatchContext.referenceNumber,
-                serialNumber: addAWatchContext.serialNumber,
-                story: addAWatchContext.purchaseStory,
-            });
-            await client.createWatch(request);
+
+            const imageParams = await Promise.all(
+                addAWatchContext.watchImages?.map((uri, index) =>
+                    uriToFileParameter(uri, index)
+                ) ?? []
+            );
+
+            await client.createWatch(
+                addAWatchContext.brand ?? '',
+                addAWatchContext.model ?? '',
+                addAWatchContext.referenceNumber ?? '',
+                addAWatchContext.serialNumber ?? '',
+                addAWatchContext.productionYear ?? 0,
+                addAWatchContext.purchaseDate?.getTime() ?? 0,
+                addAWatchContext.price ?? 0,
+                addAWatchContext.hasPapers ?? false,
+                addAWatchContext.hasOriginalBox ?? false,
+                addAWatchContext.hasRecordOfAuth ?? false,
+                addAWatchContext.condition ?? '',
+                addAWatchContext.purchaseStory ?? '',
+                imageParams
+            );
+
+            addAWatchContext.clearAllInfo?.();
             router.replace('/(tabs)/collection');
         } catch (error) {
             console.error(error);
+            setIsErrorModalVisible(true);
         } finally {
             setIsLoading(false);
         }

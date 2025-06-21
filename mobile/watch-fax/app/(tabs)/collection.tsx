@@ -3,6 +3,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { router, useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     StyleSheet,
     Text,
@@ -53,24 +54,28 @@ const Collection = () => {
                     flex: 1,
                 }}
             >
-                <FlatList
-                    style={{
-                        flex: 1,
-                    }}
-                    contentContainerStyle={{
-                        alignSelf: 'flex-start',
-                        flex: 1,
-                        width: '100%',
-                        display: 'flex',
-                        paddingTop: 0,
-                        alignItems: 'center',
-                        gap: 20,
-                    }}
-                    data={watches}
-                    renderItem={({ item }) => {
-                        return <WatchItem watch={item} />;
-                    }}
-                />
+                {isLoading ? (
+                    <ActivityIndicator animating={isLoading} size={'large'} />
+                ) : (
+                    <FlatList
+                        style={{
+                            flex: 1,
+                        }}
+                        contentContainerStyle={{
+                            alignSelf: 'flex-start',
+                            width: '100%',
+                            display: 'flex',
+                            paddingTop: 0,
+                            alignItems: 'center',
+                            gap: 20,
+                            paddingBottom: 100,
+                        }}
+                        data={watches}
+                        renderItem={({ item }) => {
+                            return <WatchItem watch={item} />;
+                        }}
+                    />
+                )}
             </SafeAreaView>
             <TouchableOpacity
                 onPress={() => {

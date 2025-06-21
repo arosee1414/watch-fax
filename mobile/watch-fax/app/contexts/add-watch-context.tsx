@@ -1,3 +1,4 @@
+import { ImagePickerAsset } from 'expo-image-picker';
 import * as React from 'react';
 import { createContext, Dispatch } from 'react';
 
@@ -26,8 +27,8 @@ interface IAddAWatchContextProps {
     setCondition?: Dispatch<React.SetStateAction<string | undefined>>;
     purchaseStory?: string;
     setPurchaseStory?: Dispatch<React.SetStateAction<string | undefined>>;
-    watchImages?: string[];
-    setWatchImages?: Dispatch<React.SetStateAction<string[]>>;
+    watchImages?: string[] | undefined;
+    setWatchImages?: Dispatch<React.SetStateAction<string[] | undefined>>;
     clearAllInfo?: () => void;
 }
 
@@ -51,7 +52,9 @@ export const AddAWatchContextProvider = ({ children }: any) => {
         React.useState<boolean>(false);
     const [condition, setCondition] = React.useState<string>();
     const [purchaseStory, setPurchaseStory] = React.useState<string>();
-    const [watchImages, setWatchImages] = React.useState<string[]>([]);
+    const [watchImages, setWatchImages] = React.useState<string[] | undefined>(
+        []
+    );
 
     const value: IAddAWatchContextProps = {
         brand,
