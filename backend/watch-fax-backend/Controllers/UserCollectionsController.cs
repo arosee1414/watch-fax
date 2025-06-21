@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Serialization.HybridRow;
+using System.Net;
 using System.Security.Claims;
 using watch_fax_backend.Models;
 using watch_fax_backend.Services;
@@ -62,6 +64,10 @@ namespace watch_fax_backend.Controllers
         }
 
         [HttpGet(Name = "GetAllWatchRecords")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<WatchRecord>>> GetAllWatchesForUser()
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -77,9 +83,15 @@ namespace watch_fax_backend.Controllers
 
             _logger.LogInformation($"{scenario} | Received request to get all watches for user {userId}. CorrelationId: {correlationId}");
 
-            var results = await _userCollectionsService.GetAllWatchesForUser(userId, correlationId);
-
-            return Ok(results);
+            try
+            {
+                var results = await _userCollectionsService.GetAllWatchesForUser(userId, correlationId);
+                return Ok(results);
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return Ok(new List<WatchRecord>());
+            }
         }
     }
 }
