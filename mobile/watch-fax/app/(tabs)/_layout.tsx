@@ -128,21 +128,21 @@ export default function Layout(): JSX.Element {
                     headerLeftContainerStyle: {
                         marginLeft: 66,
                     },
-                    headerLeft: () => {
-                        return (
-                            <TouchableOpacity style={{ marginLeft: 15 }}>
-                                <FontAwesome5
-                                    name='arrow-left'
-                                    size={24}
-                                    color={navyColor}
-                                    onPress={() => {
-                                        Keyboard.dismiss();
-                                        router.back();
-                                    }}
-                                />
-                            </TouchableOpacity>
-                        );
-                    },
+                    // headerLeft: () => {
+                    //     return (
+                    //         <TouchableOpacity style={{ marginLeft: 15 }}>
+                    //             <FontAwesome5
+                    //                 name='arrow-left'
+                    //                 size={24}
+                    //                 color={navyColor}
+                    //                 onPress={() => {
+                    //                     Keyboard.dismiss();
+                    //                     router.back();
+                    //                 }}
+                    //             />
+                    //         </TouchableOpacity>
+                    //     );
+                    // },
                 }}
             />
             <Tabs.Screen

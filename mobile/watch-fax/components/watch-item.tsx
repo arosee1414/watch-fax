@@ -8,9 +8,12 @@ import {
     Text,
     Image,
     ActivityIndicator,
+    TouchableOpacity,
 } from 'react-native';
 import UseUserReturn from '@clerk/types';
 import { formatDateFromMillis } from '@/app/utils/time-utils';
+import { Ionicons } from '@expo/vector-icons';
+import { navyColor } from '@/assets/default-styles';
 
 export interface IWatchItemProps {
     watch: WatchRecord;
@@ -44,25 +47,37 @@ const WatchItem = (props: IWatchItemProps) => {
                     borderRadius: 100,
                     display: 'flex',
                     flexDirection: 'row',
-                    gap: 5,
-
-                    alignItems: 'center',
+                    justifyContent: 'space-between',
                 }}
             >
-                <Image
-                    source={{
-                        uri: props.user?.imageUrl,
-                        //cache: 'force-cache',
-                    }}
-                    resizeMode='contain'
+                <View
                     style={{
-                        width: 25,
-                        height: 25,
-                        borderRadius: 100,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 5,
+                        alignItems: 'center',
                     }}
-                />
+                >
+                    <Image
+                        source={{
+                            uri: props.user?.imageUrl,
+                            //cache: 'force-cache',
+                        }}
+                        resizeMode='contain'
+                        style={{
+                            width: 25,
+                            height: 25,
+                            borderRadius: 100,
+                        }}
+                    />
+                    <Text>{props.user?.firstName}</Text>
+                </View>
 
-                <Text>{props.user?.firstName}</Text>
+                <TouchableOpacity
+                    style={{ alignContent: 'flex-end', marginRight: 10 }}
+                >
+                    <Ionicons name='open-outline' size={24} color={navyColor} />
+                </TouchableOpacity>
             </View>
             <View
                 style={{
