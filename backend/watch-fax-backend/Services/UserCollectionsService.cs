@@ -35,6 +35,22 @@ namespace watch_fax_backend.Services
             return records;
         }
 
+        public async Task<WatchRecord> GetWatchById(string userId, string watchId, string correlationId)
+        {
+            var scenario = $"{GetType()} | {nameof(GetWatchById)}";
+            _logger.LogInformation($"{scenario} | Attempting to get watch {watchId} for user {userId}. CorrelationId: {correlationId}");
+
+            var records = await _cosmosContext.UserCollectionsContainer.GetItemLinqQueryable<WatchRecord>().Where(x => x.Id == watchId).ToListAsync();
+
+            var record = records.SingleOrDefault();
+
+            record.ImageUrls = _blobStorageClient.RefreshSasUris(record.ImageUrls, TimeSpan.FromHours(1));
+
+            _logger.LogInformation($"{scenario} | Found watch {watchId} record for user {userId}. CorrelationId: {correlationId}");
+
+            return record;
+        }
+
         public async Task<WatchRecord> CreateWatch(string userId, WatchRecordCreateRequest request, string correlationId)
         {
             var scenario = $"{GetType()} | {nameof(CreateWatch)}";

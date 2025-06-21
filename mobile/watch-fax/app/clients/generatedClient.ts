@@ -211,47 +211,6 @@ export default class Client {
                 }
                 return result200;
             });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-                let result400: any = null;
-                let resultData400 =
-                    _responseText === ''
-                        ? null
-                        : JSON.parse(_responseText, this.jsonParseReviver);
-                result400 = ProblemDetails.fromJS(resultData400);
-                return throwException(
-                    'Bad Request',
-                    status,
-                    _responseText,
-                    _headers,
-                    result400
-                );
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-                let result404: any = null;
-                let resultData404 =
-                    _responseText === ''
-                        ? null
-                        : JSON.parse(_responseText, this.jsonParseReviver);
-                result404 = ProblemDetails.fromJS(resultData404);
-                return throwException(
-                    'Not Found',
-                    status,
-                    _responseText,
-                    _headers,
-                    result404
-                );
-            });
-        } else if (status === 500) {
-            return response.text().then((_responseText) => {
-                return throwException(
-                    'Server Error',
-                    status,
-                    _responseText,
-                    _headers
-                );
-            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
                 return throwException(
@@ -264,69 +223,57 @@ export default class Client {
         }
         return Promise.resolve<WatchRecord[]>(null as any);
     }
-}
 
-export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
+    /**
+     * @return Success
+     */
+    getWatchById(id: string): Promise<WatchRecord> {
+        let url_ = this.baseUrl + '/api/v1/UserCollections/id';
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace('{id}', encodeURIComponent('' + id));
+        url_ = url_.replace(/[?&]$/, '');
 
-    [key: string]: any;
+        let options_: RequestInit = {
+            method: 'GET',
+            headers: {
+                Accept: 'text/plain',
+            },
+        };
 
-    constructor(data?: IProblemDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetWatchById(_response);
+        });
+    }
+
+    protected processGetWatchById(response: Response): Promise<WatchRecord> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            for (var property in _data) {
-                if (_data.hasOwnProperty(property))
-                    this[property] = _data[property];
-            }
-            this.type = _data['type'];
-            this.title = _data['title'];
-            this.status = _data['status'];
-            this.detail = _data['detail'];
-            this.instance = _data['instance'];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                let resultData200 =
+                    _responseText === ''
+                        ? null
+                        : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = WatchRecord.fromJS(resultData200);
+                return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+                return throwException(
+                    'An unexpected server error occurred.',
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
+        return Promise.resolve<WatchRecord>(null as any);
     }
-
-    static fromJS(data: any): ProblemDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProblemDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        for (var property in this) {
-            if (this.hasOwnProperty(property)) data[property] = this[property];
-        }
-        data['type'] = this.type;
-        data['title'] = this.title;
-        data['status'] = this.status;
-        data['detail'] = this.detail;
-        data['instance'] = this.instance;
-        return data;
-    }
-}
-
-export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-
-    [key: string]: any;
 }
 
 export class WatchRecord implements IWatchRecord {

@@ -64,10 +64,6 @@ namespace watch_fax_backend.Controllers
         }
 
         [HttpGet(Name = "GetAllWatchRecords")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<WatchRecord>>> GetAllWatchesForUser()
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -87,6 +83,37 @@ namespace watch_fax_backend.Controllers
             {
                 var results = await _userCollectionsService.GetAllWatchesForUser(userId, correlationId);
                 return Ok(results);
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return Ok(new List<WatchRecord>());
+            }
+        }
+
+        [HttpGet("id", Name = "GetWatchById")]
+        public async Task<ActionResult<WatchRecord>> GetWatchById([FromRoute] string id)
+        {
+            var correlationId = Guid.NewGuid().ToString();
+            var scenario = $"{GetType()} | {nameof(GetWatchById)}";
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                _logger.LogError($"{scenario} | User ID was null. CorrelationId: {correlationId}");
+                return Unauthorized();
+            }
+
+            _logger.LogInformation($"{scenario} | Received request to get watch {id} for user {userId}. CorrelationId: {correlationId}");
+
+            try
+            {
+                var result = await _userCollectionsService.GetWatchById(userId, id, correlationId);
+                if (result.UserId != userId)
+                {
+                    return Forbid();
+                }
+                return Ok(result);
             }
             catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
