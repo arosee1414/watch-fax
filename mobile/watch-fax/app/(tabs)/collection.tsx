@@ -12,12 +12,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAddAWatchContext } from '../contexts/add-watch-context';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import WatchFaxClient from '../clients/watch-fax-client';
 import { WatchRecord } from '../clients/generatedClient';
 import WatchItem from '@/components/watch-item';
 
 const Collection = () => {
+    const user = useUser();
     const { getToken } = useAuth();
     const [watches, setWatches] = useState<WatchRecord[]>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -61,6 +62,8 @@ const Collection = () => {
                         style={{
                             marginTop: -50,
                             flex: 1,
+                            padding: 0,
+                            marginBottom: -35,
                         }}
                         contentContainerStyle={{
                             alignSelf: 'flex-start',
@@ -68,12 +71,17 @@ const Collection = () => {
                             display: 'flex',
                             paddingTop: 0,
                             alignItems: 'center',
-                            gap: 20,
-                            paddingBottom: 100,
+                            gap: 25,
+                            //paddingBottom: 100,
                         }}
                         data={watches}
                         renderItem={({ item }) => {
-                            return <WatchItem watch={item} />;
+                            return (
+                                <WatchItem
+                                    watch={item}
+                                    user={user?.user ?? undefined}
+                                />
+                            );
                         }}
                     />
                 )}

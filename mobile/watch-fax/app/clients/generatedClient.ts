@@ -345,6 +345,7 @@ export class WatchRecord implements IWatchRecord {
     descriptionOfCondition?: string | undefined;
     story?: string | undefined;
     imageUrls?: string[] | undefined;
+    createdAtTime?: number;
 
     constructor(data?: IWatchRecord) {
         if (data) {
@@ -375,6 +376,7 @@ export class WatchRecord implements IWatchRecord {
                 this.imageUrls = [] as any;
                 for (let item of _data['imageUrls']) this.imageUrls!.push(item);
             }
+            this.createdAtTime = _data['createdAtTime'];
         }
     }
 
@@ -405,6 +407,7 @@ export class WatchRecord implements IWatchRecord {
             data['imageUrls'] = [];
             for (let item of this.imageUrls) data['imageUrls'].push(item);
         }
+        data['createdAtTime'] = this.createdAtTime;
         return data;
     }
 }
@@ -425,6 +428,7 @@ export interface IWatchRecord {
     descriptionOfCondition?: string | undefined;
     story?: string | undefined;
     imageUrls?: string[] | undefined;
+    createdAtTime?: number;
 }
 
 export interface FileParameter {

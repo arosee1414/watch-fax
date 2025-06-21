@@ -31,5 +31,8 @@
         public string? Story { get; set; }
 
         public IEnumerable<string> ImageUrls { get; set; }
+
+        public long CreatedAtTime { get; set; }
+
     }
 }

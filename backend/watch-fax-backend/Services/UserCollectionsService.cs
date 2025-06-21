@@ -70,6 +70,7 @@ namespace watch_fax_backend.Services
                 Story = request.Story,
                 UserId = userId,
                 ImageUrls = imageUrls,
+                CreatedAtTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
             };
 
             _logger.LogInformation($"{scenario} | Attempting to create watch with ID {watchRecord.Id}. CorrelationId: {correlationId}");

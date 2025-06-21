@@ -1,25 +1,61 @@
 import { WatchRecord } from '@/app/clients/generatedClient';
-import React from 'react';
+import { useUser } from '@clerk/clerk-expo';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, View, Text, Image } from 'react-native';
+import UseUserReturn from '@clerk/types';
+import { formatDateFromMillis } from '@/app/utils/time-utils';
+import { goldColor } from '@/assets/default-styles';
 
 export interface IWatchItemProps {
     watch: WatchRecord;
+    user: UseUserReturn.UserResource | undefined;
 }
 
 const WatchItem = (props: IWatchItemProps) => {
+    const [aspectRatio, setAspectRatio] = useState(1);
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
+
+    useEffect(() => {
+        Image.getSize(props.watch.imageUrls?.[0] ?? '', (width, height) => {
+            setAspectRatio(width / height);
+        });
+    }, [props]);
 
     return (
         <View
             style={{
-                borderWidth: 1,
-                borderColor: '#767676',
-                width: screenWidth * 0.7,
+                //borderWidth: 1,
+                //borderColor: '#767676',
+                width: screenWidth,
                 minHeight: screenHeight * 0.25,
-                borderRadius: 15,
             }}
         >
+            <View
+                style={{
+                    padding: 5,
+                    borderRadius: 100,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 5,
+
+                    alignItems: 'center',
+                }}
+            >
+                <Image
+                    source={{
+                        uri: props.user?.imageUrl,
+                        //cache: 'force-cache',
+                    }}
+                    resizeMode='contain'
+                    style={{
+                        width: 25,
+                        height: 25,
+                        borderRadius: 100,
+                    }}
+                />
+                <Text>{props.user?.firstName}</Text>
+            </View>
             <View
                 style={{
                     display: 'flex',
@@ -29,14 +65,13 @@ const WatchItem = (props: IWatchItemProps) => {
                 <Image
                     source={{
                         uri: props.watch.imageUrls?.[0],
-                        //cache: 'force-cache',
+                        cache: 'force-cache',
                     }}
-                    resizeMode='cover'
+                    resizeMode='contain'
                     style={{
-                        borderTopLeftRadius: 15,
-                        borderTopRightRadius: 15,
-                        width: screenWidth * 0.7,
-                        height: screenHeight * 0.25,
+                        aspectRatio: aspectRatio,
+                        width: screenWidth,
+                        minHeight: screenHeight * 0.25,
                     }}
                 />
             </View>
@@ -55,18 +90,39 @@ const WatchItem = (props: IWatchItemProps) => {
                     >
                         {props.watch.brand} {props.watch.model}
                     </Text>
-                    <Text
+                    <View
                         style={{
-                            marginTop: 5,
-                            fontFamily: 'roboto-black',
-                            fontSize: 15,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
                         }}
                     >
-                        {props.watch.purchasePrice?.toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                        })}
-                    </Text>
+                        <Text
+                            style={{
+                                marginTop: 5,
+                                fontFamily: 'roboto-black',
+                                fontSize: 15,
+                            }}
+                        >
+                            {props.watch.purchasePrice?.toLocaleString(
+                                'en-US',
+                                {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }
+                            )}
+                        </Text>
+                        <Text
+                            style={{
+                                marginTop: 5,
+                                //color: goldColor,
+                                fontFamily: 'roboto-black',
+                                fontSize: 15,
+                            }}
+                        >
+                            {formatDateFromMillis(props.watch.createdAtTime!)}
+                        </Text>
+                    </View>
                 </View>
             </View>
         </View>
