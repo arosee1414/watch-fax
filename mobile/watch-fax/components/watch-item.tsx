@@ -1,10 +1,16 @@
 import { WatchRecord } from '@/app/clients/generatedClient';
 import { useUser } from '@clerk/clerk-expo';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View, Text, Image } from 'react-native';
+import {
+    Dimensions,
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    ActivityIndicator,
+} from 'react-native';
 import UseUserReturn from '@clerk/types';
 import { formatDateFromMillis } from '@/app/utils/time-utils';
-import { goldColor } from '@/assets/default-styles';
 
 export interface IWatchItemProps {
     watch: WatchRecord;
@@ -13,6 +19,7 @@ export interface IWatchItemProps {
 
 const WatchItem = (props: IWatchItemProps) => {
     const [aspectRatio, setAspectRatio] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
 
@@ -54,6 +61,7 @@ const WatchItem = (props: IWatchItemProps) => {
                         borderRadius: 100,
                     }}
                 />
+
                 <Text>{props.user?.firstName}</Text>
             </View>
             <View
@@ -62,7 +70,11 @@ const WatchItem = (props: IWatchItemProps) => {
                     alignItems: 'center',
                 }}
             >
+                {isLoading && (
+                    <ActivityIndicator size={'large'} animating={isLoading} />
+                )}
                 <Image
+                    onLoad={() => setIsLoading(false)}
                     source={{
                         uri: props.watch.imageUrls?.[0],
                         cache: 'force-cache',
@@ -115,7 +127,7 @@ const WatchItem = (props: IWatchItemProps) => {
                         <Text
                             style={{
                                 marginTop: 5,
-                                //color: goldColor,
+                                color: '#585858',
                                 fontFamily: 'roboto-black',
                                 fontSize: 15,
                             }}

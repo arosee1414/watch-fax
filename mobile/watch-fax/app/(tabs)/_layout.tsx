@@ -1,9 +1,14 @@
 import { backgroundColor, goldColor, navyColor } from '@/assets/default-styles';
 import { useUser } from '@clerk/clerk-expo';
-import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
+import {
+    AntDesign,
+    Feather,
+    FontAwesome5,
+    MaterialIcons,
+} from '@expo/vector-icons';
+import { router, Tabs } from 'expo-router';
 import React, { JSX } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 
 export default function Layout(): JSX.Element {
     const { user } = useUser();
@@ -95,7 +100,7 @@ export default function Layout(): JSX.Element {
                     headerStyle: { backgroundColor: backgroundColor },
                     headerTitleStyle: {
                         color: navyColor,
-                        fontSize: 25,
+                        fontSize: 20,
                         fontFamily: 'roboto-black',
                     },
                     tabBarLabel: 'Collection',
@@ -110,6 +115,24 @@ export default function Layout(): JSX.Element {
                                     name='watch'
                                     size={size}
                                     color={color}
+                                />
+                            </View>
+                        );
+                    },
+                    headerLeftContainerStyle: {
+                        marginLeft: 66,
+                    },
+                    headerLeft: () => {
+                        return (
+                            <View style={{ marginLeft: 15 }}>
+                                <FontAwesome5
+                                    name='arrow-left'
+                                    size={24}
+                                    color={navyColor}
+                                    onPress={() => {
+                                        Keyboard.dismiss();
+                                        router.back();
+                                    }}
                                 />
                             </View>
                         );
