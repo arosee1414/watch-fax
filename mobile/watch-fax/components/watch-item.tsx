@@ -14,6 +14,7 @@ import UseUserReturn from '@clerk/types';
 import { formatDateFromMillis } from '@/app/utils/time-utils';
 import { Ionicons } from '@expo/vector-icons';
 import { navyColor } from '@/assets/default-styles';
+import { router } from 'expo-router';
 
 export interface IWatchItemProps {
     watch: WatchRecord;
@@ -74,31 +75,49 @@ const WatchItem = (props: IWatchItemProps) => {
                 </View>
 
                 <TouchableOpacity
+                    onPress={() =>
+                        router.push(
+                            `/(screens)/watch-details/${props.watch.id}`
+                        )
+                    }
                     style={{ alignContent: 'flex-end', marginRight: 10 }}
                 >
                     <Ionicons name='open-outline' size={24} color={navyColor} />
                 </TouchableOpacity>
             </View>
+
             <View
                 style={{
-                    display: 'flex',
+                    width: screenWidth,
+                    aspectRatio: aspectRatio,
+                    justifyContent: 'center',
                     alignItems: 'center',
+                    backgroundColor: '#f2f2f2', // Optional: placeholder background
+                    position: 'relative',
                 }}
             >
                 {isLoading && (
-                    <ActivityIndicator size={'large'} animating={isLoading} />
+                    <ActivityIndicator
+                        size='large'
+                        color='#000'
+                        style={{
+                            position: 'absolute',
+                            zIndex: 1,
+                        }}
+                    />
                 )}
                 <Image
+                    onLoadStart={() => setIsLoading(true)}
                     onLoad={() => setIsLoading(false)}
+                    onError={() => setIsLoading(false)}
                     source={{
                         uri: props.watch.imageUrls?.[0],
                         cache: 'force-cache',
                     }}
                     resizeMode='contain'
                     style={{
-                        aspectRatio: aspectRatio,
-                        width: screenWidth,
-                        minHeight: screenHeight * 0.25,
+                        width: '100%',
+                        height: '100%',
                     }}
                 />
             </View>
