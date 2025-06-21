@@ -59,6 +59,7 @@ const Collection = () => {
                 ) : (
                     <FlatList
                         style={{
+                            marginTop: -50,
                             flex: 1,
                         }}
                         contentContainerStyle={{
