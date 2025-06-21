@@ -95,6 +95,34 @@ const Layout = () => {
                     ),
                 }}
             />
+            <Stack.Screen
+                name='watch-details/[watchId]'
+                options={{
+                    headerShown: true,
+                    title: 'Watch details',
+                    headerTitleStyle: {
+                        color: navyColor,
+                        fontSize: 25,
+                        fontFamily: 'roboto-black',
+                    },
+                    headerShadowVisible: false,
+                    headerStyle: { backgroundColor: backgroundColor },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                Keyboard.dismiss();
+                                router.back();
+                            }}
+                        >
+                            <FontAwesome5
+                                name='arrow-left'
+                                size={24}
+                                color={navyColor}
+                            />
+                        </TouchableOpacity>
+                    ),
+                }}
+            />
         </Stack>
     );
 };
