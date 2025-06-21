@@ -22,7 +22,7 @@ namespace watch_fax_backend.Controllers
         }
 
         [HttpPost(Name = "CreateWatch")]
-        public async Task<ActionResult<WatchRecord>> CreateWatch([FromBody] WatchRecordCreateRequest request)
+        public async Task<ActionResult<WatchRecord>> CreateWatch([FromForm] WatchRecordCreateRequest request)
         {
             var correlationId = Guid.NewGuid().ToString();
             var scenario = $"{GetType()} | {nameof(CreateWatch)}";

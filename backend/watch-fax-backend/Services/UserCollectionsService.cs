@@ -1,4 +1,5 @@
 ﻿using watch_fax_backend.Infrastructure.Configuration.Cosmos;
+using watch_fax_backend.Infrastructure.Configuration.Storage;
 using watch_fax_backend.Infrastructure.Extensions;
 using watch_fax_backend.Models;
 
@@ -8,11 +9,13 @@ namespace watch_fax_backend.Services
     {
         private readonly CosmosContext _cosmosContext;
         private readonly ILogger<UserCollectionsService> _logger;
+        private readonly BlobStorageClient _blobStorageClient;
 
-        public UserCollectionsService(CosmosContext cosmosContext, ILogger<UserCollectionsService> logger)
+        public UserCollectionsService(CosmosContext cosmosContext, ILogger<UserCollectionsService> logger, BlobStorageClient blobStorageClient)
         {
             _cosmosContext = cosmosContext ?? throw new ArgumentNullException(nameof(cosmosContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _blobStorageClient = blobStorageClient ?? throw new ArgumentNullException(nameof(blobStorageClient));
         }
 
         public async Task<IEnumerable<WatchRecord>> GetAllWatchesForUser(string userId, string correlationId)
@@ -31,6 +34,21 @@ namespace watch_fax_backend.Services
         {
             var scenario = $"{GetType()} | {nameof(CreateWatch)}";
 
+            var imageUrls = new List<string>();
+
+            if (request.Images != null)
+            {
+                foreach (var file in request.Images)
+                {
+                    if (file != null && file.Length > 0)
+                    {
+                        var url = await _blobStorageClient.UploadImageAsync(file);
+                        imageUrls.Add(url);
+                    }
+                }
+            }
+            
+
             var watchRecord = new WatchRecord()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -46,7 +64,8 @@ namespace watch_fax_backend.Services
                 ReferenceNumber = request.ReferenceNumber,
                 SerialNumber = request.SerialNumber,
                 Story = request.Story,
-                UserId = userId
+                UserId = userId,
+                ImageUrls = imageUrls,
             };
 
             _logger.LogInformation($"{scenario} | Attempting to create watch with ID {watchRecord.Id}. CorrelationId: {correlationId}");

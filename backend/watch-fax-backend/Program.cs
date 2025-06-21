@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Configuration;
 using System.Net;
+using watch_fax_backend.Infrastructure.Configuration;
 using watch_fax_backend.Infrastructure.Configuration.Cosmos;
+using watch_fax_backend.Infrastructure.Configuration.Storage;
 using watch_fax_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 var clerkAuthority = builder.Configuration["ClerkConfiguration:Authority"];
 builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
 builder.Services.Configure<CosmosConfiguration>(builder.Configuration.GetSection("CosmosConfiguration"));
+builder.Services.Configure<StorageConfiguration>(builder.Configuration.GetSection("StorageConfiguration"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -57,6 +59,11 @@ builder.Services.AddSingleton<CosmosContext>(provider =>
     var cosmosConfig = provider.GetRequiredService<IOptions<CosmosConfiguration>>().Value;
     var cosmosClient = provider.GetRequiredService<CosmosClient>();
     return new CosmosContext(cosmosClient, cosmosConfig);
+});
+builder.Services.AddSingleton<BlobStorageClient>(provider =>
+{
+    var blobStorageConfig = provider.GetRequiredService<IOptions<StorageConfiguration>>().Value;
+    return new BlobStorageClient(blobStorageConfig.ConnectionString, blobStorageConfig.BlobContainerName);
 });
 
 builder.Services.AddSingleton<UserCollectionsService>();

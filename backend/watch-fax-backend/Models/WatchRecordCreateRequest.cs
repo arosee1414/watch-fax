@@ -25,5 +25,7 @@
         public string? DescriptionOfCondition { get; set; }
 
         public string? Story { get; set; }
+
+        public List<IFormFile>? Images { get; set; }
     }
 }
