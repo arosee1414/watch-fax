@@ -1,7 +1,7 @@
 import { backgroundColor, navyColor } from '@/assets/default-styles';
 import { router, Stack } from 'expo-router';
 import * as React from 'react';
-import { Button, Keyboard } from 'react-native';
+import { Button, Keyboard, TouchableOpacity } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 export default function AuthLayout(): React.JSX.Element {
     return (
@@ -20,15 +20,18 @@ export default function AuthLayout(): React.JSX.Element {
                     headerShadowVisible: false,
                     headerStyle: { backgroundColor: backgroundColor },
                     headerLeft: () => (
-                        <FontAwesome5
-                            name='arrow-left'
-                            size={24}
-                            color='black'
+                        <TouchableOpacity
                             onPress={() => {
                                 Keyboard.dismiss();
                                 router.back();
                             }}
-                        />
+                        >
+                            <FontAwesome5
+                                name='arrow-left'
+                                size={24}
+                                color={navyColor}
+                            />
+                        </TouchableOpacity>
                     ),
                 }}
             />

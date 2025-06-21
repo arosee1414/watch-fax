@@ -8,7 +8,13 @@ import {
 } from '@expo/vector-icons';
 import { router, Tabs } from 'expo-router';
 import React, { JSX } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import {
+    Keyboard,
+    StyleSheet,
+    Touchable,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
 export default function Layout(): JSX.Element {
     const { user } = useUser();
@@ -124,7 +130,7 @@ export default function Layout(): JSX.Element {
                     },
                     headerLeft: () => {
                         return (
-                            <View style={{ marginLeft: 15 }}>
+                            <TouchableOpacity style={{ marginLeft: 15 }}>
                                 <FontAwesome5
                                     name='arrow-left'
                                     size={24}
@@ -134,7 +140,7 @@ export default function Layout(): JSX.Element {
                                         router.back();
                                     }}
                                 />
-                            </View>
+                            </TouchableOpacity>
                         );
                     },
                 }}

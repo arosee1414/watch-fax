@@ -2,7 +2,7 @@ import { backgroundColor, navyColor } from '@/assets/default-styles';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import React from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAddAWatchContext } from '../contexts/add-watch-context';
 
 const Layout = () => {
@@ -22,16 +22,19 @@ const Layout = () => {
                     headerShadowVisible: false,
                     headerStyle: { backgroundColor: backgroundColor },
                     headerLeft: () => (
-                        <FontAwesome5
-                            name='arrow-left'
-                            size={24}
-                            color='black'
+                        <TouchableOpacity
                             onPress={() => {
                                 addAWatchContext.clearAllInfo?.();
                                 Keyboard.dismiss();
                                 router.back();
                             }}
-                        />
+                        >
+                            <FontAwesome5
+                                name='arrow-left'
+                                size={24}
+                                color={navyColor}
+                            />
+                        </TouchableOpacity>
                     ),
                 }}
             />
@@ -48,15 +51,19 @@ const Layout = () => {
                     headerShadowVisible: false,
                     headerStyle: { backgroundColor: backgroundColor },
                     headerLeft: () => (
-                        <FontAwesome5
-                            name='arrow-left'
-                            size={24}
-                            color='black'
+                        <TouchableOpacity
                             onPress={() => {
+                                addAWatchContext.clearAllInfo?.();
                                 Keyboard.dismiss();
                                 router.back();
                             }}
-                        />
+                        >
+                            <FontAwesome5
+                                name='arrow-left'
+                                size={24}
+                                color={navyColor}
+                            />
+                        </TouchableOpacity>
                     ),
                 }}
             />
@@ -73,15 +80,18 @@ const Layout = () => {
                     headerShadowVisible: false,
                     headerStyle: { backgroundColor: backgroundColor },
                     headerLeft: () => (
-                        <FontAwesome5
-                            name='arrow-left'
-                            size={24}
-                            color='black'
+                        <TouchableOpacity
                             onPress={() => {
                                 Keyboard.dismiss();
                                 router.back();
                             }}
-                        />
+                        >
+                            <FontAwesome5
+                                name='arrow-left'
+                                size={24}
+                                color={navyColor}
+                            />
+                        </TouchableOpacity>
                     ),
                 }}
             />
