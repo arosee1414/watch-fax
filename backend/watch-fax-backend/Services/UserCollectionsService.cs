@@ -25,6 +25,11 @@ namespace watch_fax_backend.Services
 
             var records = await _cosmosContext.UserCollectionsContainer.GetItemLinqQueryable<WatchRecord>().Where(x => x.UserId == userId).ToListAsync();
 
+            foreach ( var record in records )
+            {
+                record.ImageUrls = _blobStorageClient.RefreshSasUris(record.ImageUrls, TimeSpan.FromHours(1));
+            }
+
             _logger.LogInformation($"{scenario} | Found {records.Count()} watch records for user {userId}. CorrelationId: {correlationId}");
 
             return records;
@@ -48,7 +53,6 @@ namespace watch_fax_backend.Services
                 }
             }
             
-
             var watchRecord = new WatchRecord()
             {
                 Id = Guid.NewGuid().ToString(),

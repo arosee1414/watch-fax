@@ -27,9 +27,14 @@ const WatchItem = (props: IWatchItemProps) => {
                 }}
             >
                 <Image
-                    source={require('../assets/images/sample-watch.png')}
-                    resizeMode='stretch'
+                    source={{
+                        uri: props.watch.imageUrls?.[0],
+                        //cache: 'force-cache',
+                    }}
+                    resizeMode='cover'
                     style={{
+                        borderTopLeftRadius: 15,
+                        borderTopRightRadius: 15,
                         width: screenWidth * 0.7,
                         height: screenHeight * 0.25,
                     }}

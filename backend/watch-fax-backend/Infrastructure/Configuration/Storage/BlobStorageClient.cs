@@ -76,5 +76,33 @@ namespace watch_fax_backend.Infrastructure.Configuration.Storage
 
             return sasUri.Uri;
         }
+        public IEnumerable<string> RefreshSasUris(IEnumerable<string> blobUris, TimeSpan validDuration)
+        {
+            var sasUris = new List<string>();
+
+            foreach (var uri in blobUris)
+            {
+                if (Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
+                {
+                    // Extract blob name from URI
+                    var blobName = Path.GetFileName(parsedUri.LocalPath);
+
+                    // Get the BlobClient
+                    var blobClient = _blobContainerClient.GetBlobClient(blobName);
+
+                    // Generate a fresh SAS URI
+                    var freshSasUri = GenerateSasUri(blobClient, validDuration);
+                    sasUris.Add(freshSasUri.ToString());
+                }
+                else
+                {
+                    // Invalid URI
+                    throw new InvalidOperationException($"Invalid blob URI: {uri}");
+                }
+            }
+
+            return sasUris;
+        }
+
     }
 }
