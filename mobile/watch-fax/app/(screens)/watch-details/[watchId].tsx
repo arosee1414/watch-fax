@@ -13,6 +13,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { WatchRecord } from '@/app/clients/generatedClient';
 import { useAuth } from '@clerk/clerk-expo';
 import WatchFaxClient from '@/app/clients/watch-fax-client';
+import ImageCarousel from '@/components/image-carousel';
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function WatchDetails() {
     const { watchId } = useLocalSearchParams();
@@ -54,7 +56,17 @@ export default function WatchDetails() {
                 flex: 1,
             }}
         >
-            <ScrollView
+            <View
+                style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <ImageCarousel imageUrls={watch?.imageUrls ?? []} />
+            </View>
+
+            {/* <ScrollView
                 style={{
                     marginTop: -50,
                     //flex: 1,
@@ -144,7 +156,7 @@ export default function WatchDetails() {
                         }}
                     ></View>
                 </View>
-            </ScrollView>
+            </ScrollView> */}
         </SafeAreaView>
     );
 }
