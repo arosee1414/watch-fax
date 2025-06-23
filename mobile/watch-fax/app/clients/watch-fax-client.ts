@@ -5,7 +5,7 @@ export default class WatchFaxClient extends Client {
         authToken: string,
         baseUrl: string = process.env.NODE_ENV === 'production'
             ? 'https://watch-fax-e7dya4a5fpe9e7ht.eastus-01.azurewebsites.net'
-            : 'http://172.20.10.2:5107',
+            : 'http://192.168.7.145:5107',
         http?: {
             fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
         }

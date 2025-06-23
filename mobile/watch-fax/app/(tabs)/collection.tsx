@@ -59,6 +59,7 @@ const Collection = () => {
                     <ActivityIndicator animating={isLoading} size={'large'} />
                 ) : (
                     <FlatList
+                        showsVerticalScrollIndicator={false}
                         style={{
                             marginTop: -50,
                             flex: 1,
@@ -72,7 +73,7 @@ const Collection = () => {
                             paddingTop: 0,
                             alignItems: 'center',
                             gap: 25,
-                            //paddingBottom: 100,
+                            paddingBottom: 20,
                         }}
                         data={watches}
                         renderItem={({ item }) => {

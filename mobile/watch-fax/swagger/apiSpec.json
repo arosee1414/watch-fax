@@ -166,7 +166,7 @@
                 }
             }
         },
-        "/api/v1/UserCollections/id": {
+        "/api/v1/UserCollections/{id}": {
             "get": {
                 "tags": ["UserCollections"],
                 "operationId": "GetWatchById",

@@ -90,8 +90,8 @@ namespace watch_fax_backend.Controllers
             }
         }
 
-        [HttpGet("id", Name = "GetWatchById")]
-        public async Task<ActionResult<WatchRecord>> GetWatchById([FromRoute] string id)
+        [HttpGet("{id}", Name = "GetWatchById")]
+        public async Task<ActionResult<WatchRecord>> GetWatchById(string id)
         {
             var correlationId = Guid.NewGuid().ToString();
             var scenario = $"{GetType()} | {nameof(GetWatchById)}";

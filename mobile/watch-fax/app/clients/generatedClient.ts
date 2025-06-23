@@ -228,7 +228,7 @@ export default class Client {
      * @return Success
      */
     getWatchById(id: string): Promise<WatchRecord> {
-        let url_ = this.baseUrl + '/api/v1/UserCollections/id';
+        let url_ = this.baseUrl + '/api/v1/UserCollections/{id}';
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace('{id}', encodeURIComponent('' + id));
@@ -240,7 +240,7 @@ export default class Client {
                 Accept: 'text/plain',
             },
         };
-
+        console.log(url_, id);
         return this.http.fetch(url_, options_).then((_response: Response) => {
             return this.processGetWatchById(_response);
         });

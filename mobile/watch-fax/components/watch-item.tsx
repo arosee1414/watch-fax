@@ -36,64 +36,31 @@ const WatchItem = (props: IWatchItemProps) => {
     return (
         <View
             style={{
-                //borderWidth: 1,
-                //borderColor: '#767676',
-                width: screenWidth,
+                backgroundColor: 'white',
+                borderColor: 'grey',
+                borderRadius: 10,
+                width: screenWidth * 0.7,
                 minHeight: screenHeight * 0.25,
+                display: 'flex',
+                alignItems: 'center',
+                elevation: 2,
+                shadowColor: 'black',
+                shadowOpacity: 0.5,
+                shadowOffset: {
+                    height: 2,
+                    width: 0,
+                },
+                shadowRadius: 2,
             }}
         >
             <View
                 style={{
-                    padding: 5,
-                    borderRadius: 100,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 5,
-                        alignItems: 'center',
-                    }}
-                >
-                    <Image
-                        source={{
-                            uri: props.user?.imageUrl,
-                            //cache: 'force-cache',
-                        }}
-                        resizeMode='contain'
-                        style={{
-                            width: 25,
-                            height: 25,
-                            borderRadius: 100,
-                        }}
-                    />
-                    <Text>{props.user?.firstName}</Text>
-                </View>
-
-                <TouchableOpacity
-                    onPress={() =>
-                        router.push(
-                            `/(screens)/watch-details/${props.watch.id}`
-                        )
-                    }
-                    style={{ alignContent: 'flex-end', marginRight: 10 }}
-                >
-                    <Ionicons name='open-outline' size={24} color={navyColor} />
-                </TouchableOpacity>
-            </View>
-
-            <View
-                style={{
-                    width: screenWidth,
-                    aspectRatio: aspectRatio,
+                    borderRadius: 10,
+                    width: screenWidth * 0.7,
+                    height: screenHeight * 0.4,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: '#f2f2f2', // Optional: placeholder background
-                    position: 'relative',
+                    backgroundColor: 'white',
                 }}
             >
                 {isLoading && (
@@ -114,20 +81,29 @@ const WatchItem = (props: IWatchItemProps) => {
                         uri: props.watch.imageUrls?.[0],
                         cache: 'force-cache',
                     }}
-                    resizeMode='contain'
+                    resizeMode='center'
                     style={{
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
                         width: '100%',
-                        height: '100%',
+                        height: screenHeight * 0.4,
                     }}
                 />
             </View>
-            <View
+            <TouchableOpacity
+                onPress={() =>
+                    router.push(`/(screens)/watch-details/${props.watch.id}`)
+                }
                 style={{
-                    padding: 10,
                     display: 'flex',
                 }}
             >
-                <View>
+                <View
+                    style={{
+                        width: screenWidth * 0.7,
+                        padding: 5,
+                    }}
+                >
                     <Text
                         style={{
                             fontFamily: 'roboto-black',
@@ -170,7 +146,7 @@ const WatchItem = (props: IWatchItemProps) => {
                         </Text>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 };
