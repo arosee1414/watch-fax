@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 interface IImageCarouselProps {
-    imageUrls: string[];
+    imageUrls?: string[];
 }
 
 export default function ImageCarousel(props: IImageCarouselProps) {

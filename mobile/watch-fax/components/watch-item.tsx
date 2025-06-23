@@ -22,16 +22,9 @@ export interface IWatchItemProps {
 }
 
 const WatchItem = (props: IWatchItemProps) => {
-    const [aspectRatio, setAspectRatio] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
-
-    useEffect(() => {
-        Image.getSize(props.watch.imageUrls?.[0] ?? '', (width, height) => {
-            setAspectRatio(width / height);
-        });
-    }, [props]);
 
     return (
         <View
@@ -73,22 +66,38 @@ const WatchItem = (props: IWatchItemProps) => {
                         }}
                     />
                 )}
-                <Image
-                    onLoadStart={() => setIsLoading(true)}
-                    onLoad={() => setIsLoading(false)}
-                    onError={() => setIsLoading(false)}
-                    source={{
-                        uri: props.watch.imageUrls?.[0],
-                        cache: 'force-cache',
-                    }}
-                    resizeMode='center'
-                    style={{
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        width: '100%',
-                        height: screenHeight * 0.4,
-                    }}
-                />
+                {props.watch.imageUrls?.[0] != null ? (
+                    <Image
+                        onLoadStart={() => setIsLoading(true)}
+                        onLoad={() => setIsLoading(false)}
+                        onError={() => setIsLoading(false)}
+                        source={{
+                            uri: props.watch.imageUrls?.[0],
+                            cache: 'force-cache',
+                        }}
+                        resizeMode='center'
+                        style={{
+                            borderTopLeftRadius: 10,
+                            borderTopRightRadius: 10,
+                            width: '100%',
+                            height: screenHeight * 0.4,
+                        }}
+                    />
+                ) : (
+                    <Image
+                        onLoadStart={() => setIsLoading(true)}
+                        onLoad={() => setIsLoading(false)}
+                        onError={() => setIsLoading(false)}
+                        source={require('../assets/images/no-image.png')}
+                        resizeMode='center'
+                        style={{
+                            borderTopLeftRadius: 10,
+                            borderTopRightRadius: 10,
+                            width: '100%',
+                            height: screenHeight * 0.4,
+                        }}
+                    />
+                )}
             </View>
             <TouchableOpacity
                 onPress={() =>

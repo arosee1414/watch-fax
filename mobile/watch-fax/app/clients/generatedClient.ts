@@ -240,7 +240,6 @@ export default class Client {
                 Accept: 'text/plain',
             },
         };
-        console.log(url_, id);
         return this.http.fetch(url_, options_).then((_response: Response) => {
             return this.processGetWatchById(_response);
         });
