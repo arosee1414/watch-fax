@@ -18,21 +18,19 @@ export default function ImageCarousel(props: IImageCarouselProps) {
         },
     });
     return (
-        <View>
-            <Animated.FlatList
-                data={props?.imageUrls}
-                renderItem={({ item, index }) => (
-                    <ImageCarouselItem
-                        imageUrl={item}
-                        index={index}
-                        scrollX={scrollX}
-                    />
-                )}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                pagingEnabled
-                onScroll={onScrollHandler}
-            />
-        </View>
+        <Animated.FlatList
+            data={props?.imageUrls}
+            renderItem={({ item, index }) => (
+                <ImageCarouselItem
+                    imageUrl={item}
+                    index={index}
+                    scrollX={scrollX}
+                />
+            )}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            pagingEnabled
+            onScroll={onScrollHandler}
+        />
     );
 }
